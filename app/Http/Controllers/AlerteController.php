@@ -1,7 +1,5 @@
 <?php
 
-// app/Http/Controllers/AlerteController.php
-
 namespace App\Http\Controllers;
 
 use App\Models\Alerte;
@@ -26,6 +24,16 @@ class AlerteController extends Controller
         return response()->json($alertes);
     }
 
+    // NOUVELLE MÉTHODE : Compter les alertes non lues
+    public function getNonLuesCount()
+    {
+        $count = Alerte::where('lue', false)->count();
+
+        return response()->json([
+            'count' => $count
+        ]);
+    }
+
     public function marquerLue($id)
     {
         $alerte = Alerte::findOrFail($id);
@@ -34,6 +42,17 @@ class AlerteController extends Controller
         return response()->json([
             'message' => 'Alerte marquée comme lue',
             'alerte' => $alerte
+        ]);
+    }
+
+    // NOUVELLE MÉTHODE : Marquer toutes les alertes comme lues
+    public function marquerToutesLues()
+    {
+        $updated = Alerte::where('lue', false)->update(['lue' => true]);
+
+        return response()->json([
+            'message' => 'Toutes les alertes ont été marquées comme lues',
+            'count' => $updated
         ]);
     }
 

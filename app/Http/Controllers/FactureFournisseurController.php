@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FactureFournisseur;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,7 +35,7 @@ class FactureFournisseurController extends Controller
     public function show($id)
     {
         $facture = FactureFournisseur::with([
-            'commandeAchat.detailCommandeAchats.produit',
+            'commandeAchat.detailCommandeAchats.produit',  // ← En camelCase
             'fournisseur',
             'paiements'
         ])->findOrFail($id);
@@ -60,5 +61,20 @@ class FactureFournisseurController extends Controller
         });
 
         return response()->json($factures);
+    }
+    /**
+     * Générer PDF
+     */
+    public function genererPDF($id)
+    {
+        $facture = FactureFournisseur::with([
+            'fournisseur',
+            'commandeAchat.detailCommandeAchats.produit',
+            'paiements'
+        ])->findOrFail($id);
+
+        $pdf = Pdf::loadView('factures-fournisseurs.pdf', compact('facture'));
+
+        return $pdf->download('facture-fournisseur-' . $facture->numero . '.pdf');
     }
 }

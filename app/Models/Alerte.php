@@ -1,25 +1,22 @@
 <?php
 
-// app/Models/Alerte.php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Alerte extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'type',
-        'produit_id',
         'message',
+        'produit_id',
         'lue'
     ];
 
     protected $casts = [
         'lue' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
     public function produit()

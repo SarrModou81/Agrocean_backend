@@ -1,7 +1,5 @@
 <?php
 
-// app/Http/Controllers/ProduitController.php
-
 namespace App\Http\Controllers;
 
 use App\Models\Produit;
@@ -28,7 +26,6 @@ class ProduitController extends Controller
 
         $produits = $query->paginate(20);
 
-        // ✅ IMPORTANT: S'assurer que stock_total est calculé pour chaque produit
         $produits->getCollection()->transform(function($produit) {
             $produit->stock_total = $produit->stockTotal();
             return $produit;
@@ -40,7 +37,8 @@ class ProduitController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'code' => 'required|string|unique:produits',
+            // Le code n'est plus requis, il sera généré automatiquement
+            'code' => 'nullable|string|unique:produits',
             'nom' => 'required|string|max:255',
             'description' => 'nullable|string',
             'categorie_id' => 'required|exists:categories,id',
@@ -76,7 +74,8 @@ class ProduitController extends Controller
         $produit = Produit::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'code' => 'string|unique:produits,code,' . $id,
+            // Le code ne peut pas être modifié une fois créé
+            'code' => 'prohibited',
             'nom' => 'string|max:255',
             'prix_achat' => 'numeric|min:0',
             'prix_vente' => 'numeric|min:0',
@@ -87,7 +86,7 @@ class ProduitController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $produit->update($request->all());
+        $produit->update($request->except('code')); // Exclure le code de la mise à jour
 
         return response()->json([
             'message' => 'Produit mis à jour avec succès',

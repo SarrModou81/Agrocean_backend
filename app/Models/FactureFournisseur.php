@@ -25,9 +25,9 @@ class FactureFournisseur extends Model
         'montant_total' => 'decimal:2',
     ];
 
-    public function commandeAchat()
+    public function commandeAchat()  // ← BON NOM en camelCase
     {
-        return $this->belongsTo(CommandeAchat::class);
+        return $this->belongsTo(CommandeAchat::class, 'commande_achat_id');
     }
 
     public function fournisseur()

@@ -40,6 +40,9 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::post('/auth/refresh', [AuthController::class, 'refresh']);
     Route::get('/auth/me', [AuthController::class, 'me']);
+    // Routes de profil
+    Route::post('/auth/change-password', [AuthController::class, 'changePassword']);
+    Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
 
     // ===== UTILISATEURS (Administrateur) =====
     Route::apiResource('users', UserController::class);
@@ -80,7 +83,9 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('commandes-achat', CommandeAchatController::class);
     Route::post('/commandes-achat/{id}/valider', [CommandeAchatController::class, 'valider']);
     Route::post('/commandes-achat/{id}/receptionner', [CommandeAchatController::class, 'receptionner']);
-
+    Route::post('/commandes-achat/{id}/annuler', [CommandeAchatController::class, 'annuler']);
+    Route::put('/commandes-achat/{id}', [CommandeAchatController::class, 'update']);
+    Route::delete('/commandes-achat/{id}', [CommandeAchatController::class, 'destroy']);
     // ===== FOURNISSEURS =====
     Route::apiResource('fournisseurs', FournisseurController::class);
     Route::get('/fournisseurs/{id}/historique', [FournisseurController::class, 'historique']);
@@ -109,9 +114,11 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/paiements/statistiques/analyse', [PaiementController::class, 'statistiques']);
 
     // ===== ALERTES =====
-    Route::get('/alertes', [AlerteController::class, 'index']);
-    Route::post('/alertes/{id}/lire', [AlerteController::class, 'marquerLue']);
-    Route::delete('/alertes/{id}', [AlerteController::class, 'destroy']);
+    Route::get('alertes', [AlerteController::class, 'index']);
+    Route::get('alertes/non-lues/count', [AlerteController::class, 'getNonLuesCount']); // NOUVELLE ROUTE
+    Route::post('alertes/{id}/lire', [AlerteController::class, 'marquerLue']);
+    Route::post('alertes/tout-lire', [AlerteController::class, 'marquerToutesLues']); // NOUVELLE ROUTE
+    Route::delete('alertes/{id}', [AlerteController::class, 'destroy']);
 
     // ===== RAPPORTS =====
     Route::get('/rapports/dashboard', [RapportController::class, 'dashboard']);
@@ -131,4 +138,6 @@ Route::middleware('auth:api')->group(function () {
     // ===== FACTURES FOURNISSEURS =====
     Route::apiResource('factures-fournisseurs', FactureFournisseurController::class);
     Route::get('/factures-fournisseurs/impayees/liste', [FactureFournisseurController::class, 'impayees']);
+    Route::get('/factures-fournisseurs/{id}/generer-pdf', [FactureFournisseurController::class, 'genererPDF']);
+
 });

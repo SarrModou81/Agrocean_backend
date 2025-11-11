@@ -72,8 +72,26 @@ class VenteController extends Controller
 
         try {
             // Créer la vente
+// Générer un numéro unique basé sur le dernier numéro de l'année en cours
+            $annee = date('Y');
+            $dernierNumero = Vente::where('numero', 'like', 'V' . $annee . '%')
+                ->orderBy('numero', 'desc')
+                ->value('numero');
+
+            if ($dernierNumero) {
+                // Extraire le numéro séquentiel (les 6 derniers chiffres)
+                $dernierSequence = (int) substr($dernierNumero, -6);
+                $nouveauSequence = $dernierSequence + 1;
+            } else {
+                // Première vente de l'année
+                $nouveauSequence = 1;
+            }
+
+            $numero = 'V' . $annee . str_pad($nouveauSequence, 6, '0', STR_PAD_LEFT);
+
+// Créer la vente
             $vente = Vente::create([
-                'numero' => 'V' . date('Y') . str_pad(Vente::count() + 1, 6, '0', STR_PAD_LEFT),
+                'numero' => $numero,
                 'client_id' => $request->client_id,
                 'user_id' => auth()->id(),
                 'date_vente' => $request->date_vente,
@@ -208,7 +226,8 @@ class VenteController extends Controller
                 }
             }
 
-            // Déduire le stock (FIFO)
+
+// Déduire le stock (FIFO) avec traçabilité
             foreach ($vente->detailVentes as $detail) {
                 $quantiteRestante = $detail->quantite;
                 $stocks = Stock::where('produit_id', $detail->produit_id)
@@ -221,11 +240,21 @@ class VenteController extends Controller
                     if ($quantiteRestante <= 0) break;
 
                     if ($stock->quantite >= $quantiteRestante) {
-                        $stock->ajusterQuantite(-$quantiteRestante);
+                        $stock->ajusterQuantite(
+                            -$quantiteRestante,
+                            "Vente N° {$vente->numero}",
+                            'Vente',
+                            $vente->id
+                        );
                         $quantiteRestante = 0;
                     } else {
                         $quantiteRestante -= $stock->quantite;
-                        $stock->ajusterQuantite(-$stock->quantite);
+                        $stock->ajusterQuantite(
+                            -$stock->quantite,
+                            "Vente N° {$vente->numero}",
+                            'Vente',
+                            $vente->id
+                        );
                     }
                 }
 

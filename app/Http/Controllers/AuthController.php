@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -82,6 +83,60 @@ class AuthController extends Controller
         return response()->json([
             'token' => auth()->refresh(),
             'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6',
+            'new_password_confirmation' => 'required|same:new_password'
+        ]);
+
+        $user = Auth::user();
+
+        // Vérifier le mot de passe actuel
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'message' => 'Le mot de passe actuel est incorrect'
+            ], 400);
+        }
+
+        // Mettre à jour le mot de passe
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json([
+            'message' => 'Mot de passe modifié avec succès'
+        ]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'telephone' => 'sometimes|string|max:20'
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->has('name')) {
+            // Si vous avez nom et prenom séparés
+            $nameParts = explode(' ', $request->name, 2);
+            $user->prenom = $nameParts[0] ?? '';
+            $user->nom = $nameParts[1] ?? '';
+        }
+
+        if ($request->has('telephone')) {
+            $user->telephone = $request->telephone;
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Profil mis à jour avec succès',
+            'user' => $user
         ]);
     }
 }

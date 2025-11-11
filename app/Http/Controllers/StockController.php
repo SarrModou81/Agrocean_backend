@@ -4,6 +4,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MouvementStock;
 use App\Models\Stock;
 use App\Models\Produit;
 use App\Models\Entrepot;
@@ -404,25 +405,44 @@ class StockController extends Controller
         $dateDebut = $request->input('date_debut', Carbon::now()->startOfMonth());
         $dateFin = $request->input('date_fin', Carbon::now()->endOfMonth());
 
-        $mouvements = Stock::with(['produit', 'entrepot'])
-            ->whereBetween('created_at', [$dateDebut, $dateFin])
-            ->orderBy('created_at', 'desc')
+        // Convertir les dates pour inclure toute la journée
+        $dateDebut = Carbon::parse($dateDebut)->startOfDay(); // 00:00:00
+        $dateFin = Carbon::parse($dateFin)->endOfDay();       // 23:59:59
+
+        Log::info('Mouvements période', [
+            'date_debut' => $dateDebut,
+            'date_fin' => $dateFin
+        ]);
+
+        // Récupérer les mouvements de la table mouvements_stock
+        $mouvements = MouvementStock::with(['produit', 'entrepot', 'user'])
+            ->whereBetween('date', [$dateDebut, $dateFin])
+            ->orderBy('date', 'desc')
             ->get();
 
-        // Enrichir avec le type de mouvement
-        $mouvementsEnrichis = $mouvements->map(function($stock) {
+        Log::info('Mouvements trouvés', ['count' => $mouvements->count()]);
+
+        // Formater les données pour le frontend
+        $mouvementsFormates = $mouvements->map(function($mouvement) {
             return [
-                'id' => $stock->id,
-                'date' => $stock->created_at,
-                'type' => 'Entrée', // Pour simplifier, considérer toutes les créations comme des entrées
-                'produit' => $stock->produit,
-                'entrepot' => $stock->entrepot,
-                'numero_lot' => $stock->numero_lot,
-                'quantite' => $stock->quantite,
-                'motif' => 'Mouvement de stock'
+                'id' => $mouvement->id,
+                'date' => $mouvement->date,
+                'type' => $mouvement->type, // Entrée, Sortie, Ajustement
+                'produit' => $mouvement->produit,
+                'entrepot' => $mouvement->entrepot,
+                'numero_lot' => $mouvement->numero_lot,
+                'quantite' => $mouvement->quantite,
+                'motif' => $mouvement->motif,
+                'reference_type' => $mouvement->reference_type,
+                'reference_id' => $mouvement->reference_id,
+                'user' => $mouvement->user ? [
+                    'id' => $mouvement->user->id,
+                    'nom' => $mouvement->user->nom,
+                    'prenom' => $mouvement->user->prenom
+                ] : null
             ];
         });
 
-        return response()->json($mouvementsEnrichis);
+        return response()->json($mouvementsFormates);
     }
 }

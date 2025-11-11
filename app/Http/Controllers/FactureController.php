@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Facture;
 use App\Models\Vente;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -171,25 +172,20 @@ class FactureController extends Controller
     }
 
     /**
-     * Générer PDF (simulation)
+     * Générer PDF
      */
     public function genererPDF($id)
     {
         $facture = Facture::with([
             'vente.client',
-            'vente.detailVentes.produit'
+            'vente.detailVentes.produit',
+            'paiements'
         ])->findOrFail($id);
 
-        // Ici, vous pouvez utiliser une bibliothèque comme DomPDF ou TCPDF
-        // Pour l'instant, on retourne juste les données
+        $pdf = Pdf::loadView('factures.pdf', compact('facture'));
 
-        return response()->json([
-            'message' => 'PDF généré (simulation)',
-            'facture' => $facture,
-            'pdf_url' => url('/storage/factures/' . $facture->numero . '.pdf')
-        ]);
+        return $pdf->download('facture-' . $facture->numero . '.pdf');
     }
-
     /**
      * Envoyer facture par email (simulation)
      */

@@ -2,14 +2,9 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facture {{ $facture->numero }}</title>
+    <title>Facture Fournisseur {{ $facture->numero }}</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Helvetica', 'Arial', sans-serif;
@@ -18,13 +13,11 @@
             line-height: 1.6;
         }
 
-        .container {
-            padding: 20px;
-        }
+        .container { padding: 20px; }
 
-        /* En-tête avec fond bleu */
+        /* En-tête avec fond rouge pour fournisseurs */
         .header {
-            background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
             padding: 30px;
             color: white;
             border-radius: 10px 10px 0 0;
@@ -53,7 +46,7 @@
         }
 
         .invoice-title h2 {
-            font-size: 36px;
+            font-size: 28px;
             font-weight: bold;
             margin-bottom: 5px;
         }
@@ -63,7 +56,6 @@
             font-weight: 600;
         }
 
-        /* Section infos */
         .info-section {
             display: flex;
             justify-content: space-between;
@@ -75,7 +67,7 @@
             padding: 20px;
             border-radius: 8px;
             width: 48%;
-            border-left: 4px solid #3498db;
+            border-left: 4px solid #e74c3c;
         }
 
         .info-box h3 {
@@ -90,12 +82,6 @@
             font-size: 11px;
         }
 
-        .info-box strong {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        /* Badge statut */
         .status-badge {
             display: inline-block;
             padding: 5px 15px;
@@ -108,9 +94,7 @@
         .status-payee { background: #2ecc71; color: white; }
         .status-impayee { background: #e74c3c; color: white; }
         .status-partielle { background: #f39c12; color: white; }
-        .status-annulee { background: #95a5a6; color: white; }
 
-        /* Tableau */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -119,7 +103,7 @@
         }
 
         table thead {
-            background: #34495e;
+            background: #c0392b;
             color: white;
         }
 
@@ -128,7 +112,6 @@
             text-align: left;
             font-weight: 600;
             font-size: 11px;
-            text-transform: uppercase;
         }
 
         table tbody td {
@@ -141,26 +124,16 @@
             background: #f8f9fa;
         }
 
-        table tbody tr:hover {
-            background: #ecf0f1;
-        }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
 
-        .text-right {
-            text-align: right;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        /* Totaux */
         .totals {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 8px;
             width: 400px;
             float: right;
-            border: 2px solid #3498db;
+            border: 2px solid #e74c3c;
         }
 
         .total-row {
@@ -171,7 +144,7 @@
         }
 
         .total-row.grand-total {
-            border-top: 2px solid #3498db;
+            border-top: 2px solid #e74c3c;
             margin-top: 10px;
             padding-top: 15px;
         }
@@ -179,20 +152,14 @@
         .total-row.grand-total .label {
             font-size: 16px;
             font-weight: bold;
-            color: #2c3e50;
         }
 
         .total-row.grand-total .amount {
             font-size: 18px;
             font-weight: bold;
-            color: #3498db;
+            color: #e74c3c;
         }
 
-        .total-row .amount {
-            font-weight: 600;
-        }
-
-        /* Pied de page */
         .footer {
             clear: both;
             margin-top: 60px;
@@ -202,19 +169,10 @@
             color: #7f8c8d;
             font-size: 10px;
         }
-
-        .footer p {
-            margin: 5px 0;
-        }
-
-        .footer strong {
-            color: #2c3e50;
-        }
     </style>
 </head>
 <body>
 <div class="container">
-    {{-- En-tête --}}
     <div class="header">
         <div class="header-content">
             <div class="company-info">
@@ -224,25 +182,21 @@
                 <p>📞 +221 XX XXX XX XX | ✉️ contact@agrocean.sn</p>
             </div>
             <div class="invoice-title">
-                <h2>FACTURE</h2>
+                <h2>FACTURE FOURNISSEUR</h2>
                 <p>{{ $facture->numero }}</p>
             </div>
         </div>
     </div>
 
-    {{-- Section informations --}}
     <div class="info-section">
         <div class="info-box">
-            <h3>CLIENT</h3>
-            <p><strong>{{ $facture->vente->client->nom }}</strong></p>
-            @if($facture->vente->client->adresse)
-                <p>📍 {{ $facture->vente->client->adresse }}</p>
+            <h3>FOURNISSEUR</h3>
+            <p><strong>{{ $facture->fournisseur->nom }}</strong></p>
+            @if($facture->fournisseur->adresse)
+                <p>📍 {{ $facture->fournisseur->adresse }}</p>
             @endif
-            @if($facture->vente->client->telephone)
-                <p>📞 {{ $facture->vente->client->telephone }}</p>
-            @endif
-            @if($facture->vente->client->email)
-                <p>✉️ {{ $facture->vente->client->email }}</p>
+            @if($facture->fournisseur->telephone)
+                <p>📞 {{ $facture->fournisseur->telephone }}</p>
             @endif
         </div>
 
@@ -258,7 +212,6 @@
         </div>
     </div>
 
-    {{-- Tableau des produits --}}
     <table>
         <thead>
         <tr>
@@ -269,44 +222,38 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($facture->vente->detailVentes as $detail)
+        @foreach($facture->commandeAchat->detailCommandeAchats as $detail)
             <tr>
                 <td><strong>{{ $detail->produit->nom }}</strong></td>
                 <td class="text-center">{{ $detail->quantite }}</td>
                 <td class="text-right">{{ number_format($detail->prix_unitaire, 0, ',', ' ') }} FCFA</td>
-                <td class="text-right"><strong>{{ number_format($detail->prix_total, 0, ',', ' ') }} FCFA</strong></td>
+                <td class="text-right"><strong>{{ number_format($detail->sous_total, 0, ',', ' ') }} FCFA</strong></td>
             </tr>
         @endforeach
         </tbody>
     </table>
 
-    {{-- Totaux --}}
     <div class="totals">
-        <div class="total-row">
-            <span class="label">Montant HT :</span>
-            <span class="amount">{{ number_format($facture->vente->montant_total, 0, ',', ' ') }} FCFA</span>
-        </div>
         <div class="total-row grand-total">
-            <span class="label">TOTAL TTC :</span>
-            <span class="amount">{{ number_format($facture->montant_ttc, 0, ',', ' ') }} FCFA</span>
+            <span class="label">TOTAL :</span>
+            <span class="amount">{{ number_format($facture->montant_total, 0, ',', ' ') }} FCFA</span>
         </div>
-        @if($facture->paiements->count() > 0)
+        @if($facture->paiements && $facture->paiements->count() > 0)
             <div class="total-row" style="color: #2ecc71;">
                 <span class="label">Montant payé :</span>
                 <span class="amount">{{ number_format($facture->paiements->sum('montant'), 0, ',', ' ') }} FCFA</span>
             </div>
             <div class="total-row" style="color: #e74c3c;">
                 <span class="label">Montant restant :</span>
-                <span class="amount">{{ number_format($facture->montant_ttc - $facture->paiements->sum('montant'), 0, ',', ' ') }} FCFA</span>
+                <span class="amount">{{ number_format($facture->montant_total - $facture->paiements->sum('montant'), 0, ',', ' ') }} FCFA</span>
             </div>
         @endif
     </div>
 
-    {{-- Pied de page --}}
     <div class="footer">
-        <p><strong>Merci pour votre confiance !</strong></p>
+        <p><strong>Merci pour votre collaboration !</strong></p>
         <p>Document généré le {{ date('d/m/Y à H:i') }}</p>
-        <p style="margin-top: 15px;">AGROCEAN - Tous droits réservés © {{ date('Y') }}</p>
+        <p style="margin-top: 15px;">AGROCEAN © {{ date('Y') }}</p>
     </div>
 </div>
 </body>

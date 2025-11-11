@@ -1,6 +1,7 @@
 <?php
 
 // app/Models/CommandeAchat.php
+// VERSION MISE À JOUR avec support de l'annulation
 
 namespace App\Models;
 
@@ -18,12 +19,18 @@ class CommandeAchat extends Model
         'date_commande',
         'date_livraison_prevue',
         'statut',
-        'montant_total'
+        'montant_total',
+        'motif_annulation',      // NOUVEAU
+        'date_annulation',        // NOUVEAU
+        'annule_par',             // NOUVEAU
+        'date_reception'          // NOUVEAU
     ];
 
     protected $casts = [
         'date_commande' => 'date',
         'date_livraison_prevue' => 'date',
+        'date_annulation' => 'datetime',     // NOUVEAU
+        'date_reception' => 'datetime',      // NOUVEAU
         'montant_total' => 'decimal:2',
     ];
 
@@ -35,6 +42,11 @@ class CommandeAchat extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function annulePar()
+    {
+        return $this->belongsTo(User::class, 'annule_par');
     }
 
     public function detailCommandeAchats()
@@ -62,7 +74,7 @@ class CommandeAchat extends Model
     public function receptionner($entrepot_id)
     {
         foreach ($this->detailCommandeAchats as $detail) {
-            Stock::create([
+            $stock = Stock::create([
                 'produit_id' => $detail->produit_id,
                 'entrepot_id' => $entrepot_id,
                 'quantite' => $detail->quantite,
@@ -70,6 +82,21 @@ class CommandeAchat extends Model
                 'date_entree' => now(),
                 'numero_lot' => 'LOT' . date('Ymd') . $this->id,
                 'statut' => 'Disponible'
+            ]);
+
+            // Créer le mouvement d'entrée
+            MouvementStock::create([
+                'type' => 'Entrée',
+                'stock_id' => $stock->id,
+                'produit_id' => $detail->produit_id,
+                'entrepot_id' => $entrepot_id,
+                'quantite' => $detail->quantite,
+                'numero_lot' => $stock->numero_lot,
+                'motif' => "Réception commande N° {$this->numero}",
+                'reference_type' => 'CommandeAchat',
+                'reference_id' => $this->id,
+                'user_id' => auth()->id(),
+                'date' => now()
             ]);
         }
 
@@ -97,5 +124,3 @@ class CommandeAchat extends Model
         ]);
     }
 }
-
-

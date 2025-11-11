@@ -38,10 +38,15 @@ class Stock extends Model
         return $this->belongsTo(Entrepot::class);
     }
 
+    public function mouvements()
+    {
+        return $this->hasMany(MouvementStock::class);
+    }
+
     /**
-     * Ajuster la quantité en stock avec validation
+     * Ajuster la quantité en stock avec validation et traçabilité
      */
-    public function ajusterQuantite($quantite)
+    public function ajusterQuantite($quantite, $motif = null, $referenceType = null, $referenceId = null)
     {
         $nouvelleQuantite = $this->quantite + $quantite;
 
@@ -49,12 +54,37 @@ class Stock extends Model
             throw new \Exception("La quantité ne peut pas être négative pour le stock ID: {$this->id}. Quantité actuelle: {$this->quantite}, ajustement demandé: {$quantite}");
         }
 
+        // Déterminer le type de mouvement
+        $type = 'Ajustement';
+        if ($referenceType === 'Vente') {
+            $type = 'Sortie';
+        } elseif ($referenceType === 'CommandeAchat') {
+            $type = 'Entrée';
+        } elseif ($quantite > 0) {
+            $type = 'Entrée';
+        } elseif ($quantite < 0) {
+            $type = 'Sortie';
+        }
+
+        // Créer le mouvement de stock pour traçabilité
+        MouvementStock::create([
+            'type' => $type,
+            'stock_id' => $this->id,
+            'produit_id' => $this->produit_id,
+            'entrepot_id' => $this->entrepot_id,
+            'quantite' => $quantite,
+            'numero_lot' => $this->numero_lot,
+            'motif' => $motif ?? "Ajustement de stock",
+            'reference_type' => $referenceType,
+            'reference_id' => $referenceId,
+            'user_id' => auth()->id(),
+            'date' => now()
+        ]);
+
         // Mettre à jour la quantité
         $this->quantite = $nouvelleQuantite;
 
-        // Ne pas changer le statut automatiquement
-        // Le statut doit être géré manuellement par l'utilisateur
-        // Seule exception : si le stock est périmé après vérification de date
+        // Vérifier la péremption
         if ($this->date_peremption && Carbon::now()->greaterThan($this->date_peremption)) {
             $this->statut = 'Périmé';
         }
