@@ -8,6 +8,8 @@ use App\Models\Livraison;
 use App\Models\Vente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class LivraisonController extends Controller
 {
@@ -236,5 +238,43 @@ class LivraisonController extends Controller
             : 0;
 
         return response()->json($stats);
+    }
+
+    /**
+     * Générer le bon de livraison en PDF
+     */
+    public function genererBonLivraison($id)
+    {
+        $livraison = Livraison::with(['vente.client', 'vente.detailVentes.produit'])
+            ->findOrFail($id);
+
+        $vente = $livraison->vente;
+        $client = $vente->client;
+
+        $produits = $vente->detailVentes->map(function($detail) {
+            return [
+                'code' => $detail->produit->code,
+                'nom' => $detail->produit->nom,
+                'quantite' => $detail->quantite,
+                'prix_unitaire' => $detail->prix_unitaire,
+                'sous_total' => $detail->sous_total
+            ];
+        });
+
+        $pdf = PDF::loadView('pdf.bon_livraison', [
+            'livraison' => $livraison,
+            'vente' => $vente,
+            'client' => $client,
+            'produits' => $produits,
+            'date_generation' => Carbon::now()->format('d/m/Y H:i:s'),
+            'entreprise' => [
+                'nom' => 'AGROCEAN',
+                'adresse' => 'Dakar, Sénégal',
+                'telephone' => '+221 XX XXX XX XX',
+                'email' => 'contact@agrocean.sn'
+            ]
+        ]);
+
+        return $pdf->download("bon_livraison_{$vente->numero}.pdf");
     }
 }
