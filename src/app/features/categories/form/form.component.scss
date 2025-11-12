@@ -1,0 +1,53 @@
+.form-container {
+  padding: 24px;
+
+  mat-card {
+    max-width: 800px;
+    margin: 0 auto;
+
+    mat-card-header {
+      margin-bottom: 24px;
+
+      mat-card-title {
+        h2 {
+          margin: 0;
+          font-size: 24px;
+          color: #2c3e50;
+        }
+      }
+    }
+
+    mat-card-content {
+      form {
+        .form-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 20px;
+          margin-bottom: 24px;
+
+          .full-width {
+            grid-column: 1 / -1;
+          }
+        }
+
+        .form-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 12px;
+          padding-top: 16px;
+          border-top: 1px solid #e0e0e0;
+
+          button {
+            min-width: 120px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    padding: 16px;
+  }
+}

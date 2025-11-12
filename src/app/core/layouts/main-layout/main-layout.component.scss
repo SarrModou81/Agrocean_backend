@@ -1,0 +1,209 @@
+.main-layout-container {
+  height: 100vh;
+  background: var(--agrocean-background);
+}
+
+.main-sidenav {
+  width: 260px;
+  background: linear-gradient(180deg, var(--agrocean-primary), var(--agrocean-primary-dark));
+  color: white;
+  border-right: none;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+
+  .sidebar-header {
+    padding: 24px 16px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    .sidebar-logo {
+      height: 50px;
+      width: auto;
+      margin-bottom: 12px;
+      filter: brightness(0) invert(1);
+    }
+
+    .sidebar-brand {
+      display: block;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: white;
+    }
+  }
+
+  .sidebar-nav {
+    padding-top: 8px;
+    padding-bottom: 180px;
+    overflow-y: auto;
+    height: calc(100vh - 140px);
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+    }
+
+    .nav-section-label {
+      padding: 16px 16px 8px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    a {
+      color: rgba(255, 255, 255, 0.85);
+      transition: all 0.3s ease;
+      margin: 4px 8px;
+      border-radius: 8px;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      &.active-link {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        font-weight: 600;
+
+        mat-icon {
+          color: var(--agrocean-accent-light);
+        }
+      }
+
+      mat-icon {
+        color: rgba(255, 255, 255, 0.85);
+      }
+    }
+
+    mat-divider {
+      margin: 12px 16px;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.2);
+
+    .user-profile {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      mat-icon {
+        font-size: 40px;
+        width: 40px;
+        height: 40px;
+        color: white;
+      }
+
+      .user-details {
+        flex: 1;
+
+        .user-name {
+          font-size: 14px;
+          font-weight: 600;
+          color: white;
+          margin-bottom: 4px;
+        }
+
+        .user-role-badge {
+          display: inline-block;
+          padding: 2px 8px;
+          background: var(--agrocean-accent);
+          color: white;
+          border-radius: 10px;
+          font-size: 10px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
+    }
+  }
+}
+
+.main-toolbar {
+  background: white !important;
+  color: var(--agrocean-text-primary) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 0 24px;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  .page-title-header {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--agrocean-text-primary);
+  }
+
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
+
+  button mat-icon {
+    color: var(--agrocean-text-secondary);
+    transition: color 0.3s ease;
+  }
+
+  button:hover mat-icon {
+    color: var(--agrocean-primary);
+  }
+}
+
+.user-menu-header {
+  padding: 16px;
+  background: var(--agrocean-background);
+
+  .user-menu-name {
+    font-weight: 600;
+    color: var(--agrocean-text-primary);
+    margin-bottom: 4px;
+  }
+
+  .user-menu-email {
+    font-size: 12px;
+    color: var(--agrocean-text-secondary);
+  }
+}
+
+.main-content {
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .main-sidenav {
+    width: 240px;
+  }
+
+  .main-content {
+    padding: 16px;
+  }
+
+  .main-toolbar {
+    padding: 0 16px;
+
+    .page-title-header {
+      font-size: 16px;
+    }
+  }
+}

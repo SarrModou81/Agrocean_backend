@@ -1,0 +1,55 @@
+<div class="rapports-container">
+  <div class="page-header">
+    <div class="header-content">
+      <div>
+        <h1>Rapports</h1>
+        <p>Génération et consultation des rapports</p>
+      </div>
+      <div class="header-actions">
+        <mat-form-field appearance="outline">
+          <mat-label>Période</mat-label>
+          <mat-select [(value)]="selectedPeriod">
+            <mat-option value="today">Aujourd'hui</mat-option>
+            <mat-option value="week">Cette semaine</mat-option>
+            <mat-option value="month">Ce mois</mat-option>
+            <mat-option value="quarter">Ce trimestre</mat-option>
+            <mat-option value="year">Cette année</mat-option>
+            <mat-option value="custom">Personnalisée</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Types Grid -->
+  <div class="reports-grid">
+    <mat-card *ngFor="let report of reportTypes" class="report-card" (click)="generateReport(report)">
+      <mat-card-content>
+        <div class="report-icon" [style.background]="report.color">
+          <mat-icon>{{ report.icon }}</mat-icon>
+        </div>
+        <h3 class="report-title">{{ report.title }}</h3>
+        <p class="report-description">{{ report.description }}</p>
+        <button mat-raised-button color="primary" class="generate-btn">
+          <mat-icon>download</mat-icon>
+          Générer
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Recent Reports Section -->
+  <mat-card class="recent-reports-card">
+    <mat-card-header>
+      <mat-card-title>
+        <h2>Rapports Récents</h2>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="placeholder-text">
+        <mat-icon>info</mat-icon>
+        Les rapports générés récemment seront affichés ici. Cette fonctionnalité sera disponible prochainement.
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

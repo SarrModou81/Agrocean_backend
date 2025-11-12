@@ -1,0 +1,119 @@
+.settings-container {
+  padding: 24px;
+
+  .page-header {
+    margin-bottom: 32px;
+
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 32px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    p {
+      margin: 0;
+      color: #7f8c8d;
+      font-size: 16px;
+    }
+  }
+
+  .settings-card {
+    margin-bottom: 24px;
+
+    mat-card-header {
+      margin-bottom: 24px;
+
+      mat-card-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        mat-icon {
+          color: var(--agrocean-primary);
+        }
+
+        h2 {
+          margin: 0;
+          font-size: 20px;
+          color: #2c3e50;
+        }
+      }
+    }
+
+    mat-card-content {
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 24px;
+
+        .full-width {
+          grid-column: 1 / -1;
+        }
+      }
+
+      .toggle-list {
+        .toggle-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 0;
+
+          .toggle-info {
+            flex: 1;
+
+            h3 {
+              margin: 0 0 4px 0;
+              font-size: 16px;
+              font-weight: 600;
+              color: #2c3e50;
+            }
+
+            p {
+              margin: 0;
+              font-size: 14px;
+              color: #7f8c8d;
+            }
+          }
+        }
+
+        mat-divider {
+          margin: 0;
+        }
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding-top: 16px;
+        border-top: 1px solid #e0e0e0;
+
+        button {
+          min-width: 120px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 16px;
+
+    .settings-card {
+      mat-card-content {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .toggle-list .toggle-item {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 
@@ -17,6 +18,7 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    CoreModule,
     AppRoutingModule,
     ToastrModule.forRoot({
       timeOut: 3000,

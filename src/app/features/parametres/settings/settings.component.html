@@ -1,0 +1,165 @@
+<div class="settings-container">
+  <div class="page-header">
+    <h1>Paramètres</h1>
+    <p>Configuration de l'application</p>
+  </div>
+
+  <!-- General Settings -->
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>business</mat-icon>
+        <h2>Paramètres Généraux</h2>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="generalForm" (ngSubmit)="onSaveGeneral()">
+        <div class="form-grid">
+          <!-- Nom Entreprise -->
+          <mat-form-field appearance="outline">
+            <mat-label>Nom de l'entreprise</mat-label>
+            <input matInput formControlName="nom_entreprise">
+            <mat-error *ngIf="generalForm.get('nom_entreprise')?.hasError('required')">
+              Le nom est requis
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Email -->
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email">
+            <mat-error *ngIf="generalForm.get('email')?.hasError('required')">
+              L'email est requis
+            </mat-error>
+            <mat-error *ngIf="generalForm.get('email')?.hasError('email')">
+              Email invalide
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Téléphone -->
+          <mat-form-field appearance="outline">
+            <mat-label>Téléphone</mat-label>
+            <input matInput formControlName="telephone">
+          </mat-form-field>
+
+          <!-- Adresse -->
+          <mat-form-field appearance="outline">
+            <mat-label>Adresse</mat-label>
+            <input matInput formControlName="adresse">
+          </mat-form-field>
+
+          <!-- Devise -->
+          <mat-form-field appearance="outline">
+            <mat-label>Devise</mat-label>
+            <mat-select formControlName="devise">
+              <mat-option value="FCFA">FCFA (Franc CFA)</mat-option>
+              <mat-option value="EUR">EUR (Euro)</mat-option>
+              <mat-option value="USD">USD (Dollar)</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Langue -->
+          <mat-form-field appearance="outline">
+            <mat-label>Langue</mat-label>
+            <mat-select formControlName="langue">
+              <mat-option value="fr">Français</mat-option>
+              <mat-option value="en">English</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Fuseau Horaire -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Fuseau Horaire</mat-label>
+            <mat-select formControlName="fuseau_horaire">
+              <mat-option value="Africa/Dakar">Africa/Dakar (GMT+0)</mat-option>
+              <mat-option value="Africa/Abidjan">Africa/Abidjan (GMT+0)</mat-option>
+              <mat-option value="Europe/Paris">Europe/Paris (GMT+1)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || generalForm.invalid">
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            <span *ngIf="!loading">Enregistrer</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Notification Settings -->
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>notifications</mat-icon>
+        <h2>Notifications</h2>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="notificationForm" (ngSubmit)="onSaveNotifications()">
+        <div class="toggle-list">
+          <!-- Email Notifications -->
+          <div class="toggle-item">
+            <div class="toggle-info">
+              <h3>Notifications par email</h3>
+              <p>Recevoir des notifications importantes par email</p>
+            </div>
+            <mat-slide-toggle formControlName="email_notifications"></mat-slide-toggle>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <!-- Stock Alerts -->
+          <div class="toggle-item">
+            <div class="toggle-info">
+              <h3>Alertes de stock</h3>
+              <p>Être alerté quand un produit atteint le seuil minimum</p>
+            </div>
+            <mat-slide-toggle formControlName="stock_alerts"></mat-slide-toggle>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <!-- Sales Notifications -->
+          <div class="toggle-item">
+            <div class="toggle-info">
+              <h3>Notifications de ventes</h3>
+              <p>Recevoir une notification pour chaque nouvelle vente</p>
+            </div>
+            <mat-slide-toggle formControlName="ventes_notifications"></mat-slide-toggle>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <!-- Purchase Notifications -->
+          <div class="toggle-item">
+            <div class="toggle-info">
+              <h3>Notifications d'achats</h3>
+              <p>Recevoir une notification pour chaque nouvel achat</p>
+            </div>
+            <mat-slide-toggle formControlName="achats_notifications"></mat-slide-toggle>
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 24px;">
+          <!-- Low Stock Threshold -->
+          <mat-form-field appearance="outline">
+            <mat-label>Seuil d'alerte de stock bas</mat-label>
+            <input matInput type="number" formControlName="low_stock_threshold">
+            <mat-error *ngIf="notificationForm.get('low_stock_threshold')?.hasError('required')">
+              Le seuil est requis
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || notificationForm.invalid">
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            <span *ngIf="!loading">Enregistrer</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

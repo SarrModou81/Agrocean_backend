@@ -1,0 +1,66 @@
+<div class="finances-container">
+  <div class="page-header">
+    <h1>Finances</h1>
+    <p>Vue d'ensemble de la situation financière</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <mat-card *ngFor="let stat of stats" class="stat-card">
+      <mat-card-content>
+        <div class="stat-header">
+          <mat-icon [style.color]="stat.color">{{ stat.icon }}</mat-icon>
+          <span class="stat-change">{{ stat.change }}</span>
+        </div>
+        <div class="stat-value">{{ stat.value }}</div>
+        <div class="stat-title">{{ stat.title }}</div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Recent Transactions -->
+  <mat-card class="content-card">
+    <mat-card-header>
+      <mat-card-title>
+        <h2>Transactions Récentes</h2>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="placeholder-text">
+        <mat-icon>info</mat-icon>
+        Les transactions récentes seront affichées ici. Cette fonctionnalité sera disponible prochainement.
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Charts Section -->
+  <div class="charts-grid">
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title>
+          <h3>Évolution du Chiffre d'Affaires</h3>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="placeholder-text">
+          <mat-icon>insert_chart</mat-icon>
+          Graphique à venir
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title>
+          <h3>Répartition des Dépenses</h3>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="placeholder-text">
+          <mat-icon>pie_chart</mat-icon>
+          Graphique à venir
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

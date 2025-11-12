@@ -1,150 +1,63 @@
-<mat-sidenav-container class="dashboard-sidenav-container">
-  <!-- Sidebar -->
-  <mat-sidenav mode="side" opened class="dashboard-sidenav">
-    <div class="sidebar-header">
-      <img src="assets/logo.svg" alt="AGROCEAN Logo" class="sidebar-logo">
-      <span class="sidebar-brand">AGROCEAN</span>
+<!-- Welcome Section -->
+<div class="welcome-section fade-in">
+  <div class="welcome-text">
+    <h1>{{ getGreeting() }}, {{ currentUser?.prenom }} !</h1>
+    <p>{{ currentDate | date:'EEEE d MMMM yyyy':'':'fr' }}</p>
+  </div>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid fade-in">
+  <div *ngFor="let stat of stats" class="stat-card" [style.background]="stat.gradient" [routerLink]="stat.route">
+    <div class="stat-icon">
+      <mat-icon>{{ stat.icon }}</mat-icon>
     </div>
+    <div class="stat-content">
+      <div class="stat-value">{{ stat.value }}</div>
+      <div class="stat-title">{{ stat.title }}</div>
+      <div class="stat-sub">{{ stat.subValue }}</div>
+    </div>
+  </div>
+</div>
 
-    <mat-nav-list class="sidebar-nav">
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
-        <mat-icon matListItemIcon>dashboard</mat-icon>
-        <span matListItemTitle>Tableau de Bord</span>
-      </a>
+<!-- Quick Actions -->
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <mat-icon>bolt</mat-icon>
+      Actions Rapides
+    </h2>
+  </div>
+  <div class="actions-grid">
+    <button *ngFor="let action of quickActions"
+            mat-raised-button
+            [color]="action.color"
+            [routerLink]="action.route"
+            class="action-btn">
+      <mat-icon>{{ action.icon }}</mat-icon>
+      <span>{{ action.title }}</span>
+    </button>
+  </div>
+</div>
 
-      <mat-divider></mat-divider>
-
-      <div class="nav-section-label">GESTION</div>
-
-      <a mat-list-item routerLink="/produits" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>inventory_2</mat-icon>
-        <span matListItemTitle>Produits</span>
-      </a>
-
-      <a mat-list-item routerLink="/stocks" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>warehouse</mat-icon>
-        <span matListItemTitle>Stocks</span>
-      </a>
-
-      <mat-divider></mat-divider>
-
-      <div class="nav-section-label">COMMERCIAL</div>
-
-      <a mat-list-item routerLink="/ventes" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>shopping_cart</mat-icon>
-        <span matListItemTitle>Ventes</span>
-      </a>
-
-      <a mat-list-item routerLink="/achats" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>local_shipping</mat-icon>
-        <span matListItemTitle>Achats</span>
-      </a>
-
-      <a mat-list-item routerLink="/clients" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>people</mat-icon>
-        <span matListItemTitle>Clients</span>
-      </a>
-
-      <a mat-list-item routerLink="/fournisseurs" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>business</mat-icon>
-        <span matListItemTitle>Fournisseurs</span>
-      </a>
-    </mat-nav-list>
-
-    <div class="sidebar-footer">
-      <mat-divider></mat-divider>
-      <div class="user-profile">
-        <mat-icon>account_circle</mat-icon>
-        <div class="user-details">
-          <div class="user-name">{{ currentUser?.prenom }} {{ currentUser?.nom }}</div>
-          <div class="user-role-badge">{{ currentUser?.role }}</div>
+<!-- Modules Grid -->
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <mat-icon>apps</mat-icon>
+      Modules
+    </h2>
+  </div>
+  <div class="modules-grid">
+    <mat-card *ngFor="let module of modules" class="module-card" [routerLink]="module.route">
+      <mat-card-content>
+        <div class="module-icon">
+          <mat-icon>{{ module.icon }}</mat-icon>
         </div>
-      </div>
-    </div>
-  </mat-sidenav>
-
-  <!-- Main Content -->
-  <mat-sidenav-content>
-    <!-- Header Toolbar -->
-    <mat-toolbar class="dashboard-toolbar">
-      <span class="page-title-header">{{ getGreeting() }}</span>
-      <span class="toolbar-spacer"></span>
-      <button mat-icon-button matTooltip="Notifications">
-        <mat-icon>notifications</mat-icon>
-      </button>
-      <button mat-icon-button (click)="logout()" matTooltip="Déconnexion" class="logout-btn">
-        <mat-icon>logout</mat-icon>
-      </button>
-    </mat-toolbar>
-
-    <!-- Dashboard Content -->
-    <div class="dashboard-content">
-    <!-- Welcome Section -->
-    <div class="welcome-section fade-in">
-      <div class="welcome-text">
-        <h1>{{ getGreeting() }}, {{ currentUser?.prenom }} !</h1>
-        <p>{{ currentDate | date:'EEEE d MMMM yyyy':'':'fr' }}</p>
-      </div>
-      <div class="welcome-illustration">
-        <mat-icon>dashboard</mat-icon>
-      </div>
-    </div>
-
-    <!-- Stats Grid -->
-    <div class="stats-grid fade-in">
-      <div *ngFor="let stat of stats" class="stat-card" [style.background]="stat.gradient" [routerLink]="stat.route">
-        <div class="stat-icon">
-          <mat-icon>{{ stat.icon }}</mat-icon>
-        </div>
-        <div class="stat-content">
-          <div class="stat-value">{{ stat.value }}</div>
-          <div class="stat-title">{{ stat.title }}</div>
-          <div class="stat-sub">{{ stat.subValue }}</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick Actions -->
-    <div class="section">
-      <div class="section-header">
-        <h2 class="section-title">
-          <mat-icon>bolt</mat-icon>
-          Actions Rapides
-        </h2>
-      </div>
-      <div class="actions-grid">
-        <button *ngFor="let action of quickActions"
-                mat-raised-button
-                [color]="action.color"
-                [routerLink]="action.route"
-                class="action-btn">
-          <mat-icon>{{ action.icon }}</mat-icon>
-          <span>{{ action.title }}</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Modules Grid -->
-    <div class="section">
-      <div class="section-header">
-        <h2 class="section-title">
-          <mat-icon>apps</mat-icon>
-          Modules
-        </h2>
-      </div>
-      <div class="modules-grid">
-        <mat-card *ngFor="let module of modules" class="module-card" [routerLink]="module.route">
-          <mat-card-content>
-            <div class="module-icon">
-              <mat-icon>{{ module.icon }}</mat-icon>
-            </div>
-            <h3 class="module-title">{{ module.title }}</h3>
-            <p class="module-description">{{ module.description }}</p>
-            <mat-icon class="module-arrow">arrow_forward</mat-icon>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+        <h3 class="module-title">{{ module.title }}</h3>
+        <p class="module-description">{{ module.description }}</p>
+        <mat-icon class="module-arrow">arrow_forward</mat-icon>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,143 @@
+<mat-sidenav-container class="main-layout-container">
+  <!-- Sidebar -->
+  <mat-sidenav mode="side" opened class="main-sidenav">
+    <div class="sidebar-header">
+      <img src="assets/logo.svg" alt="AGROCEAN Logo" class="sidebar-logo">
+      <span class="sidebar-brand">AGROCEAN</span>
+    </div>
+
+    <mat-nav-list class="sidebar-nav">
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Tableau de Bord</span>
+      </a>
+
+      <mat-divider></mat-divider>
+
+      <div class="nav-section-label">GESTION</div>
+
+      <a mat-list-item routerLink="/produits" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>inventory_2</mat-icon>
+        <span matListItemTitle>Produits</span>
+      </a>
+
+      <a mat-list-item routerLink="/categories" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>category</mat-icon>
+        <span matListItemTitle>Catégories</span>
+      </a>
+
+      <a mat-list-item routerLink="/stocks" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>warehouse</mat-icon>
+        <span matListItemTitle>Stocks</span>
+      </a>
+
+      <a mat-list-item routerLink="/entrepots" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>store</mat-icon>
+        <span matListItemTitle>Entrepôts</span>
+      </a>
+
+      <mat-divider></mat-divider>
+
+      <div class="nav-section-label">COMMERCIAL</div>
+
+      <a mat-list-item routerLink="/ventes" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>shopping_cart</mat-icon>
+        <span matListItemTitle>Ventes</span>
+      </a>
+
+      <a mat-list-item routerLink="/achats" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>local_shipping</mat-icon>
+        <span matListItemTitle>Achats</span>
+      </a>
+
+      <a mat-list-item routerLink="/clients" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>people</mat-icon>
+        <span matListItemTitle>Clients</span>
+      </a>
+
+      <a mat-list-item routerLink="/fournisseurs" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>business</mat-icon>
+        <span matListItemTitle>Fournisseurs</span>
+      </a>
+
+      <mat-divider></mat-divider>
+
+      <div class="nav-section-label">FINANCES</div>
+
+      <a mat-list-item routerLink="/finances" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>account_balance</mat-icon>
+        <span matListItemTitle>Finances</span>
+      </a>
+
+      <a mat-list-item routerLink="/rapports" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>assessment</mat-icon>
+        <span matListItemTitle>Rapports</span>
+      </a>
+
+      <mat-divider></mat-divider>
+
+      <div class="nav-section-label">ADMINISTRATION</div>
+
+      <a mat-list-item routerLink="/utilisateurs" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>manage_accounts</mat-icon>
+        <span matListItemTitle>Utilisateurs</span>
+      </a>
+
+      <a mat-list-item routerLink="/parametres" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>settings</mat-icon>
+        <span matListItemTitle>Paramètres</span>
+      </a>
+    </mat-nav-list>
+
+    <div class="sidebar-footer">
+      <mat-divider></mat-divider>
+      <div class="user-profile">
+        <mat-icon>account_circle</mat-icon>
+        <div class="user-details">
+          <div class="user-name">{{ currentUser?.prenom }} {{ currentUser?.nom }}</div>
+          <div class="user-role-badge">{{ currentUser?.role }}</div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content>
+    <!-- Header Toolbar -->
+    <mat-toolbar class="main-toolbar">
+      <span class="page-title-header">{{ getGreeting() }}</span>
+      <span class="toolbar-spacer"></span>
+      <button mat-icon-button matTooltip="Notifications">
+        <mat-icon [matBadge]="3" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" matTooltip="Profil">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <div class="user-menu-header">
+          <div class="user-menu-name">{{ currentUser?.prenom }} {{ currentUser?.nom }}</div>
+          <div class="user-menu-email">{{ currentUser?.email }}</div>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="/profil">
+          <mat-icon>person</mat-icon>
+          <span>Mon Profil</span>
+        </button>
+        <button mat-menu-item routerLink="/parametres">
+          <mat-icon>settings</mat-icon>
+          <span>Paramètres</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon color="warn">logout</mat-icon>
+          <span>Déconnexion</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <!-- Page Content -->
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
