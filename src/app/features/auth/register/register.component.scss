@@ -1,0 +1,126 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+
+  mat-card-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+
+    mat-card-title {
+      text-align: center;
+
+      h1 {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 700;
+        color: #2c3e50;
+        letter-spacing: 2px;
+      }
+
+      .subtitle {
+        margin: 8px 0 0;
+        font-size: 14px;
+        color: #7f8c8d;
+        font-weight: 400;
+      }
+    }
+  }
+
+  mat-card-content {
+    padding: 0 20px 20px;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .form-row {
+        display: flex;
+        gap: 16px;
+
+        .half-width {
+          flex: 1;
+        }
+      }
+
+      .full-width {
+        width: 100%;
+      }
+
+      .submit-button {
+        height: 48px;
+        font-size: 16px;
+        font-weight: 500;
+        margin-top: 10px;
+        position: relative;
+
+        mat-spinner {
+          display: inline-block;
+          margin-right: 8px;
+        }
+      }
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #e0e0e0;
+
+      p {
+        margin: 0;
+        color: #7f8c8d;
+        font-size: 14px;
+
+        a {
+          color: #667eea;
+          text-decoration: none;
+          font-weight: 500;
+          margin-left: 4px;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .register-card {
+    padding: 15px;
+
+    mat-card-header {
+      mat-card-title {
+        h1 {
+          font-size: 28px;
+        }
+      }
+    }
+
+    mat-card-content {
+      padding: 0 10px 15px;
+
+      form {
+        .form-row {
+          flex-direction: column;
+          gap: 16px;
+        }
+      }
+    }
+  }
+}
