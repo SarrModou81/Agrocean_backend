@@ -16,9 +16,11 @@ export class FormComponent implements OnInit {
   utilisateurId?: number;
 
   roles = [
-    { value: 'admin', label: 'Administrateur' },
-    { value: 'manager', label: 'Manager' },
-    { value: 'employe', label: 'Employé' }
+    { value: 'Administrateur', label: 'Administrateur' },
+    { value: 'Commercial', label: 'Commercial' },
+    { value: 'GestionnaireStock', label: 'Gestionnaire de Stock' },
+    { value: 'Comptable', label: 'Comptable' },
+    { value: 'AgentApprovisionnement', label: 'Agent d\'Approvisionnement' }
   ];
 
   constructor(
@@ -35,8 +37,8 @@ export class FormComponent implements OnInit {
       prenom: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       telephone: [''],
-      role: ['employe', Validators.required],
-      actif: [true],
+      role: ['Commercial', Validators.required],
+      is_active: [true],
       password: [''],
       password_confirmation: ['']
     });

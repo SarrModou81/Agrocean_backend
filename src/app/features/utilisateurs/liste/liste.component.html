@@ -54,8 +54,8 @@
           <ng-container matColumnDef="actif">
             <th mat-header-cell *matHeaderCellDef>Statut</th>
             <td mat-cell *matCellDef="let utilisateur">
-              <mat-chip [color]="utilisateur.actif ? 'primary' : 'warn'">
-                {{ utilisateur.actif ? 'Actif' : 'Inactif' }}
+              <mat-chip [color]="utilisateur.is_active ? 'primary' : 'warn'">
+                {{ utilisateur.is_active ? 'Actif' : 'Inactif' }}
               </mat-chip>
             </td>
           </ng-container>
