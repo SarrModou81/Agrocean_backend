@@ -1,0 +1,153 @@
+// Custom AGROCEAN Theme
+@use '@angular/material' as mat;
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+// Define AGROCEAN color palettes
+$agrocean-primary-palette: (
+  50: #e3f2fd,
+  100: #bbdefb,
+  200: #90caf9,
+  300: #64b5f6,
+  400: #42a5f5,
+  500: #1565C0,  // Primary ocean blue
+  600: #1e88e5,
+  700: #1976d2,
+  800: #1565c0,
+  900: #0d47a1,
+  A100: #82b1ff,
+  A200: #448aff,
+  A400: #2979ff,
+  A700: #2962ff,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: white,
+    A400: white,
+    A700: white,
+  )
+);
+
+$agrocean-accent-palette: (
+  50: #e8f5e9,
+  100: #c8e6c9,
+  200: #a5d6a7,
+  300: #81c784,
+  400: #66bb6a,
+  500: #43A047,  // Agricultural green
+  600: #4caf50,
+  700: #43a047,
+  800: #388e3c,
+  900: #2e7d32,
+  A100: #b9f6ca,
+  A200: #69f0ae,
+  A400: #00e676,
+  A700: #00c853,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: white,
+  )
+);
+
+$agrocean-warn-palette: (
+  50: #fff3e0,
+  100: #ffe0b2,
+  200: #ffcc80,
+  300: #ffb74d,
+  400: #ffa726,
+  500: #FB8C00,  // Warm orange
+  600: #fb8c00,
+  700: #f57c00,
+  800: #ef6c00,
+  900: #e65100,
+  A100: #ffd180,
+  A200: #ffab40,
+  A400: #ff9100,
+  A700: #ff6d00,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: white,
+  )
+);
+
+// Create the theme object
+$agrocean-primary: mat.define-palette($agrocean-primary-palette, 500);
+$agrocean-accent: mat.define-palette($agrocean-accent-palette, 500);
+$agrocean-warn: mat.define-palette($agrocean-warn-palette, 500);
+
+// Create the light theme
+$agrocean-theme: mat.define-light-theme((
+  color: (
+    primary: $agrocean-primary,
+    accent: $agrocean-accent,
+    warn: $agrocean-warn,
+  ),
+  typography: mat.define-typography-config(
+    $font-family: '"Roboto", "Helvetica Neue", sans-serif',
+    $headline-1: mat.define-typography-level(32px, 48px, 700),
+    $headline-2: mat.define-typography-level(28px, 40px, 700),
+    $headline-3: mat.define-typography-level(24px, 32px, 600),
+    $headline-4: mat.define-typography-level(20px, 28px, 600),
+    $headline-5: mat.define-typography-level(18px, 26px, 500),
+    $headline-6: mat.define-typography-level(16px, 24px, 500),
+  ),
+  density: 0,
+));
+
+// Include theme styles for core and each component used in your app
+@include mat.all-component-themes($agrocean-theme);
+
+// Custom AGROCEAN variables
+:root {
+  --agrocean-primary: #1565C0;
+  --agrocean-primary-light: #42a5f5;
+  --agrocean-primary-dark: #0d47a1;
+  --agrocean-accent: #43A047;
+  --agrocean-accent-light: #66bb6a;
+  --agrocean-accent-dark: #2e7d32;
+  --agrocean-warn: #FB8C00;
+  --agrocean-warn-light: #ffa726;
+  --agrocean-warn-dark: #ef6c00;
+  --agrocean-background: #f5f5f5;
+  --agrocean-surface: #ffffff;
+  --agrocean-text-primary: rgba(0, 0, 0, 0.87);
+  --agrocean-text-secondary: rgba(0, 0, 0, 0.60);
+  --agrocean-text-disabled: rgba(0, 0, 0, 0.38);
+  --agrocean-border: rgba(0, 0, 0, 0.12);
+  --agrocean-shadow: rgba(0, 0, 0, 0.15);
+  --agrocean-gradient: linear-gradient(135deg, var(--agrocean-primary) 0%, var(--agrocean-accent) 100%);
+}

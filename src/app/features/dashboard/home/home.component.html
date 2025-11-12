@@ -1,107 +1,85 @@
 <div class="dashboard-container">
-  <mat-toolbar color="primary" class="dashboard-toolbar">
-    <span>AGROCEAN - Tableau de Bord</span>
+  <!-- Header Toolbar -->
+  <mat-toolbar class="dashboard-toolbar">
+    <div class="logo-container">
+      <img src="assets/logo.svg" alt="AGROCEAN Logo" class="logo">
+      <span class="logo-text">AGROCEAN</span>
+    </div>
     <span class="toolbar-spacer"></span>
     <span *ngIf="currentUser" class="user-info">
       <mat-icon>person</mat-icon>
-      {{ currentUser.prenom }} {{ currentUser.nom }} ({{ currentUser.role }})
+      <span class="user-name">{{ currentUser.prenom }} {{ currentUser.nom }}</span>
+      <span class="user-role">{{ currentUser.role }}</span>
     </span>
-    <button mat-icon-button (click)="logout()" matTooltip="Déconnexion">
+    <button mat-icon-button (click)="logout()" matTooltip="Déconnexion" class="logout-btn">
       <mat-icon>logout</mat-icon>
     </button>
   </mat-toolbar>
 
+  <!-- Dashboard Content -->
   <div class="dashboard-content">
-    <div class="welcome-section">
-      <h1>Bienvenue, {{ currentUser?.prenom }} !</h1>
-      <p>Voici un aperçu de votre activité</p>
+    <!-- Welcome Section -->
+    <div class="welcome-section fade-in">
+      <div class="welcome-text">
+        <h1>{{ getGreeting() }}, {{ currentUser?.prenom }} !</h1>
+        <p>{{ currentDate | date:'EEEE d MMMM yyyy':'':'fr' }}</p>
+      </div>
+      <div class="welcome-illustration">
+        <mat-icon>dashboard</mat-icon>
+      </div>
     </div>
 
-    <div class="stats-grid">
-      <mat-card *ngFor="let stat of stats" class="stat-card">
-        <mat-card-content>
-          <div class="stat-header" [style.background-color]="stat.color">
-            <mat-icon>{{ stat.icon }}</mat-icon>
-          </div>
-          <div class="stat-body">
-            <h2>{{ stat.value }}</h2>
-            <p>{{ stat.title }}</p>
-          </div>
-        </mat-card-content>
-      </mat-card>
+    <!-- Stats Grid -->
+    <div class="stats-grid fade-in">
+      <div *ngFor="let stat of stats" class="stat-card" [style.background]="stat.gradient" [routerLink]="stat.route">
+        <div class="stat-icon">
+          <mat-icon>{{ stat.icon }}</mat-icon>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value">{{ stat.value }}</div>
+          <div class="stat-title">{{ stat.title }}</div>
+          <div class="stat-sub">{{ stat.subValue }}</div>
+        </div>
+      </div>
     </div>
 
-    <div class="quick-actions">
-      <h2>Actions Rapides</h2>
+    <!-- Quick Actions -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <mat-icon>bolt</mat-icon>
+          Actions Rapides
+        </h2>
+      </div>
       <div class="actions-grid">
-        <button mat-raised-button color="primary" routerLink="/ventes/nouvelle">
-          <mat-icon>add_shopping_cart</mat-icon>
-          Nouvelle Vente
-        </button>
-        <button mat-raised-button color="accent" routerLink="/produits/nouveau">
-          <mat-icon>add_box</mat-icon>
-          Ajouter Produit
-        </button>
-        <button mat-raised-button routerLink="/rapports">
-          <mat-icon>assessment</mat-icon>
-          Voir Rapports
-        </button>
-        <button mat-raised-button routerLink="/stocks">
-          <mat-icon>inventory</mat-icon>
-          Gérer Stock
+        <button *ngFor="let action of quickActions"
+                mat-raised-button
+                [color]="action.color"
+                [routerLink]="action.route"
+                class="action-btn">
+          <mat-icon>{{ action.icon }}</mat-icon>
+          <span>{{ action.title }}</span>
         </button>
       </div>
     </div>
 
-    <!-- Navigation Links -->
-    <div class="navigation-section">
-      <h2>Accès Rapide aux Modules</h2>
-      <div class="nav-grid">
-        <mat-card class="nav-card" routerLink="/produits">
+    <!-- Modules Grid -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <mat-icon>apps</mat-icon>
+          Modules
+        </h2>
+      </div>
+      <div class="modules-grid">
+        <mat-card *ngFor="let module of modules" class="module-card" [routerLink]="module.route">
           <mat-card-content>
-            <mat-icon color="primary">inventory_2</mat-icon>
-            <h3>Produits</h3>
-            <p>Gérer le catalogue de produits</p>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="nav-card" routerLink="/stocks">
-          <mat-card-content>
-            <mat-icon color="primary">warehouse</mat-icon>
-            <h3>Stocks</h3>
-            <p>Gérer les stocks et entrepôts</p>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="nav-card" routerLink="/ventes">
-          <mat-card-content>
-            <mat-icon color="primary">shopping_cart</mat-icon>
-            <h3>Ventes</h3>
-            <p>Gérer les ventes et clients</p>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="nav-card" routerLink="/achats">
-          <mat-card-content>
-            <mat-icon color="primary">local_shipping</mat-icon>
-            <h3>Achats</h3>
-            <p>Gérer les commandes d'achat</p>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="nav-card" routerLink="/clients">
-          <mat-card-content>
-            <mat-icon color="primary">people</mat-icon>
-            <h3>Clients</h3>
-            <p>Gérer les clients</p>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="nav-card" routerLink="/fournisseurs">
-          <mat-card-content>
-            <mat-icon color="primary">business</mat-icon>
-            <h3>Fournisseurs</h3>
-            <p>Gérer les fournisseurs</p>
+            <div class="module-icon">
+              <mat-icon>{{ module.icon }}</mat-icon>
+            </div>
+            <h3 class="module-title">{{ module.title }}</h3>
+            <p class="module-description">{{ module.description }}</p>
+            <mat-icon class="module-arrow">arrow_forward</mat-icon>
           </mat-card-content>
         </mat-card>
       </div>

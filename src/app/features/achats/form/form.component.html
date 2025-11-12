@@ -1,21 +1,145 @@
-<div class="form-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title><h2>Formulaire de Commande d'Achat</h2></mat-card-title>
-    </mat-card-header>
+<div class="page-container fade-in">
+  <div class="page-header">
+    <h1 class="page-title">
+      <mat-icon>{{ isEditMode ? 'edit' : 'add_shopping_cart' }}</mat-icon>
+      {{ isEditMode ? 'Modifier la Commande' : 'Nouvelle Commande d\'Achat' }}
+    </h1>
+  </div>
 
-    <mat-card-content>
-      <div class="info-message">
-        <mat-icon color="primary">info</mat-icon>
-        <p>Le formulaire de création/modification de commande d'achat est en cours de développement.</p>
-        <p>Ce formulaire permettra de créer des commandes avec plusieurs lignes de produits, de sélectionner un fournisseur, et de gérer les quantités.</p>
+  <form [formGroup]="achatForm" (ngSubmit)="onSubmit()">
+    <div class="form-container">
+      <!-- Section: Informations Générales -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          <mat-icon>info</mat-icon>
+          Informations Générales
+        </h3>
+
+        <div class="grid-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Fournisseur</mat-label>
+            <mat-select formControlName="fournisseur_id" required>
+              <mat-option *ngFor="let fournisseur of fournisseurs" [value]="fournisseur.id">
+                {{ fournisseur.nom }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matPrefix>business</mat-icon>
+            <mat-error *ngIf="achatForm.get('fournisseur_id')?.hasError('required')">
+              Le fournisseur est requis
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Date de commande</mat-label>
+            <input matInput type="date" formControlName="date_commande" required>
+            <mat-icon matPrefix>calendar_today</mat-icon>
+            <mat-error *ngIf="achatForm.get('date_commande')?.hasError('required')">
+              La date est requise
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Date de livraison prévue</mat-label>
+            <input matInput type="date" formControlName="date_livraison_prevue">
+            <mat-icon matPrefix>local_shipping</mat-icon>
+          </mat-form-field>
+        </div>
       </div>
 
+      <!-- Section: Lignes de Produits -->
+      <div class="form-section">
+        <div class="flex-between mb-16">
+          <h3 class="form-section-title" style="margin-bottom: 0;">
+            <mat-icon>inventory_2</mat-icon>
+            Produits
+          </h3>
+          <button type="button" mat-raised-button color="primary" (click)="addLigne()">
+            <mat-icon>add</mat-icon>
+            Ajouter une ligne
+          </button>
+        </div>
+
+        <div formArrayName="lignes" class="lignes-container">
+          <div *ngFor="let ligne of lignes.controls; let i = index" [formGroupName]="i" class="ligne-item">
+            <div class="ligne-header">
+              <span class="ligne-number">Ligne {{ i + 1 }}</span>
+              <button type="button" mat-icon-button color="warn"
+                      (click)="removeLigne(i)"
+                      [disabled]="lignes.length === 1"
+                      matTooltip="Supprimer cette ligne">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+
+            <div class="ligne-fields">
+              <mat-form-field appearance="outline" class="field-produit">
+                <mat-label>Produit</mat-label>
+                <mat-select formControlName="produit_id" (selectionChange)="onProduitSelect(i)" required>
+                  <mat-option *ngFor="let produit of produits" [value]="produit.id">
+                    {{ produit.nom }}
+                    <span *ngIf="produit.prix_achat"> - {{ produit.prix_achat | number:'1.2-2' }} FCFA</span>
+                  </mat-option>
+                </mat-select>
+                <mat-icon matPrefix>inventory</mat-icon>
+                <mat-error>Le produit est requis</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field-quantite">
+                <mat-label>Quantité</mat-label>
+                <input matInput type="number" formControlName="quantite" min="1" required>
+                <mat-icon matPrefix>numbers</mat-icon>
+                <mat-error>Quantité invalide</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field-prix">
+                <mat-label>Prix Unitaire</mat-label>
+                <input matInput type="number" formControlName="prix_unitaire" min="0" required>
+                <mat-icon matPrefix>attach_money</mat-icon>
+                <span matSuffix>FCFA</span>
+                <mat-error>Prix invalide</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="field-total">
+                <mat-label>Sous-total</mat-label>
+                <input matInput type="text" formControlName="sous_total" readonly>
+                <span matSuffix>FCFA</span>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Totaux -->
+      <div class="form-section">
+        <h3 class="form-section-title">
+          <mat-icon>calculate</mat-icon>
+          Total de la Commande
+        </h3>
+
+        <div class="totals-card">
+          <div class="total-line total-final">
+            <span class="total-label">Montant Total:</span>
+            <span class="total-value">{{ calculateTotals().montantTotal }} FCFA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
       <div class="form-actions">
-        <button mat-raised-button (click)="onCancel()">
-          Retour à la liste
+        <button type="button" mat-raised-button (click)="onCancel()" [disabled]="loading">
+          <mat-icon>cancel</mat-icon>
+          Annuler
+        </button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="loading || achatForm.invalid">
+          <mat-icon>{{ isEditMode ? 'save' : 'add_shopping_cart' }}</mat-icon>
+          {{ isEditMode ? 'Enregistrer' : 'Créer la Commande' }}
         </button>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </form>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
 </div>

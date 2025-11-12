@@ -1,0 +1,46 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="oceanGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1565C0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#43A047;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Circle background -->
+  <circle cx="100" cy="100" r="95" fill="url(#oceanGradient)" opacity="0.1"/>
+
+  <!-- Wave representing ocean -->
+  <path d="M 30 120 Q 50 100, 70 120 T 110 120 T 150 120 T 190 120"
+        stroke="#1565C0" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M 30 130 Q 50 110, 70 130 T 110 130 T 150 130 T 190 130"
+        stroke="#1565C0" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Plant/agriculture symbol -->
+  <g transform="translate(100, 80)">
+    <!-- Stem -->
+    <line x1="0" y1="0" x2="0" y2="40" stroke="#43A047" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Leaves -->
+    <path d="M 0 10 Q -15 5, -20 15 Q -15 20, 0 18" fill="#43A047" opacity="0.8"/>
+    <path d="M 0 10 Q 15 5, 20 15 Q 15 20, 0 18" fill="#43A047" opacity="0.8"/>
+
+    <path d="M 0 25 Q -18 20, -23 30 Q -18 35, 0 33" fill="#43A047" opacity="0.9"/>
+    <path d="M 0 25 Q 18 20, 23 30 Q 18 35, 0 33" fill="#43A047" opacity="0.9"/>
+
+    <!-- Grain/seed at top -->
+    <circle cx="0" cy="0" r="5" fill="#FB8C00"/>
+    <circle cx="-3" cy="-2" r="3" fill="#FB8C00" opacity="0.8"/>
+    <circle cx="3" cy="-2" r="3" fill="#FB8C00" opacity="0.8"/>
+  </g>
+
+  <!-- Fish symbol in wave -->
+  <g transform="translate(60, 115)">
+    <ellipse cx="0" cy="0" rx="12" ry="6" fill="#1565C0" opacity="0.3"/>
+    <path d="M -12 0 L -18 -4 L -18 4 Z" fill="#1565C0" opacity="0.3"/>
+    <circle cx="8" cy="-1" r="1.5" fill="white"/>
+  </g>
+
+  <!-- Text AGROCEAN -->
+  <text x="100" y="175" font-family="Arial, sans-serif" font-size="24" font-weight="bold"
+        text-anchor="middle" fill="url(#oceanGradient)">AGROCEAN</text>
+</svg>

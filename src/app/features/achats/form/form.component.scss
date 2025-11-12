@@ -1,33 +1,135 @@
-.form-container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.info-message {
+.lignes-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 40px 20px;
   gap: 16px;
+}
 
-  mat-icon {
-    font-size: 48px;
-    width: 48px;
-    height: 48px;
-  }
+.ligne-item {
+  background: white;
+  border: 2px solid var(--agrocean-border);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
 
-  p {
-    margin: 8px 0;
-    color: #666;
+  &:hover {
+    border-color: var(--agrocean-primary);
+    box-shadow: 0 2px 8px var(--agrocean-shadow);
   }
 }
 
-.form-actions {
+.ligne-header {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--agrocean-border);
+}
+
+.ligne-number {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--agrocean-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ligne-fields {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field-produit {
+  flex: 2;
+}
+
+.field-quantite,
+.field-prix,
+.field-total {
+  flex: 1;
+}
+
+.totals-card {
+  background: linear-gradient(135deg, var(--agrocean-primary), var(--agrocean-accent));
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 4px 12px var(--agrocean-shadow);
+  max-width: 400px;
+}
+
+.total-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.total-label {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.total-value {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.total-final {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 2px solid rgba(255, 255, 255, 0.4) !important;
+
+  .total-label {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .total-value {
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.form-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  mat-icon {
+    color: var(--agrocean-primary);
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
   justify-content: center;
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #e0e0e0;
+  z-index: 9999;
 }
