@@ -21,7 +21,7 @@ class CategorieController extends Controller
             'nom' => 'required|string|max:255',
             'description' => 'nullable|string',
             'code_prefix' => 'nullable|string|max:10|unique:categories',
-            'type_stockage' => 'required|in:Frais,Congelé,AmbiantSec,AmbiantHumide'
+            'type_stockage' => 'required|in:Sec,Frais,Congelé,Ambiant'
         ]);
 
         if ($validator->fails()) {
@@ -56,7 +56,7 @@ class CategorieController extends Controller
         $validator = Validator::make($request->all(), [
             'nom' => 'string|max:255',
             'code_prefix' => 'nullable|string|max:10|unique:categories,code_prefix,' . $id,
-            'type_stockage' => 'in:Frais,Congelé,AmbiantSec,AmbiantHumide'
+            'type_stockage' => 'in:Sec,Frais,Congelé,Ambiant'
         ]);
 
         if ($validator->fails()) {
