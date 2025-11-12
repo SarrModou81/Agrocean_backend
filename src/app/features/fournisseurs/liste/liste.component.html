@@ -2,6 +2,10 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title><h2>Gestion des Fournisseurs</h2></mat-card-title>
+      <button mat-raised-button color="primary" routerLink="/fournisseurs/nouveau">
+        <mat-icon>add</mat-icon>
+        Nouveau Fournisseur
+      </button>
     </mat-card-header>
 
     <mat-card-content>
@@ -27,6 +31,18 @@
           <ng-container matColumnDef="adresse">
             <th mat-header-cell *matHeaderCellDef>Adresse</th>
             <td mat-cell *matCellDef="let f">{{ f.adresse || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let f">
+              <button mat-icon-button [routerLink]="['/fournisseurs/modifier', f.id]" matTooltip="Modifier">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="onDelete(f)" matTooltip="Supprimer" color="warn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
