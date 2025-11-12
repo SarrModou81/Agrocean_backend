@@ -39,13 +39,13 @@ export class ListeComponent implements OnInit {
       search: this.searchTerm || undefined
     };
 
-    this.facturesService.getFournisseursAll(params).subscribe({
-      next: (response) => {
+    this.facturesService.getFournisseurs(params).subscribe({
+      next: (response: any) => {
         this.factures = response.data;
         this.totalItems = response.total;
         this.loading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         this.toastr.error('Erreur lors du chargement des factures', 'Erreur');
         this.loading = false;
       }
@@ -135,6 +135,7 @@ export class ListeComponent implements OnInit {
     if (facture.statut === 'Payée' || facture.statut === 'Annulée') {
       return false;
     }
+    if (!facture.date_echeance) return false;
     const echeance = new Date(facture.date_echeance);
     const today = new Date();
     return echeance < today;

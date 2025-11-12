@@ -50,6 +50,10 @@ export class FacturesService {
     return this.http.get<{ success: boolean; data: Facture[] }>(`${this.apiUrl}/echues/liste`);
   }
 
+  getPDF(id: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${id}/generer-pdf`, { responseType: 'blob' });
+  }
+
   genererPDF(id: number): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/${id}/generer-pdf`, { responseType: 'blob' });
   }
@@ -93,6 +97,10 @@ export class FacturesService {
 
   impayeesFournisseurs(): Observable<{ success: boolean; data: FactureFournisseur[] }> {
     return this.http.get<{ success: boolean; data: FactureFournisseur[] }>(`${this.fournisseursUrl}/impayees/liste`);
+  }
+
+  getFournisseurPDF(id: number): Observable<Blob> {
+    return this.http.get(`${this.fournisseursUrl}/${id}/generer-pdf`, { responseType: 'blob' });
   }
 
   genererPDFFournisseur(id: number): Observable<Blob> {

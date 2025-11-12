@@ -76,7 +76,7 @@ export class FormComponent implements OnInit {
         this.livraisonForm.patchValue({
           vente_id: livraison.vente_id,
           adresse_livraison: livraison.adresse_livraison,
-          date_livraison_prevue: new Date(livraison.date_livraison_prevue),
+          date_livraison_prevue: livraison.date_livraison_prevue ? new Date(livraison.date_livraison_prevue) : undefined,
           statut: livraison.statut,
           notes: livraison.notes
         });

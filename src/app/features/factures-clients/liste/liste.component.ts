@@ -135,6 +135,7 @@ export class ListeComponent implements OnInit {
     if (facture.statut === 'Payée' || facture.statut === 'Annulée') {
       return false;
     }
+    if (!facture.date_echeance) return false;
     const echeance = new Date(facture.date_echeance);
     const today = new Date();
     return echeance < today;

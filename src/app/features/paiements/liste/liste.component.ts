@@ -101,7 +101,7 @@ export class ListeComponent implements OnInit {
     if (paiement.type === 'Client' && paiement.facture) {
       return paiement.facture.numero;
     } else if (paiement.type === 'Fournisseur' && paiement.facture_fournisseur) {
-      return paiement.facture_fournisseur.numero_facture;
+      return paiement.facture_fournisseur.numero_facture || paiement.facture_fournisseur.numero || '-';
     }
     return '-';
   }

@@ -4,13 +4,6 @@ export * from './user.model';
 export * from './produit.model';
 export * from './vente.model';
 export * from './achat.model';
-export * from './client.model';
-export * from './fournisseur.model';
-export * from './commande-achat.model';
-export * from './livraison.model';
-export * from './facture.model';
-export * from './paiement.model';
-export * from './stock.model';
 export * from './alerte.model';
 export * from './bilan-financier.model';
 

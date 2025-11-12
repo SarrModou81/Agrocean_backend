@@ -28,6 +28,7 @@ export interface CommandeAchat {
   motif_annulation?: string;
   date_annulation?: string;
   annule_par?: number;
+  details?: DetailCommandeAchat[];
   detail_commande_achats?: DetailCommandeAchat[];
   created_at?: string;
   updated_at?: string;
@@ -46,6 +47,7 @@ export interface DetailCommandeAchat {
 export enum StatutCommandeAchat {
   BROUILLON = 'Brouillon',
   VALIDEE = 'Validée',
+  RECUE = 'Reçue',
   RECEPTIONNEE = 'Réceptionnée',
   ANNULEE = 'Annulée'
 }
@@ -53,33 +55,41 @@ export enum StatutCommandeAchat {
 export interface FactureFournisseur {
   id: number;
   numero: string;
+  numero_facture?: string;
   commande_achat_id?: number;
+  commande_achat?: CommandeAchat;
   fournisseur_id: number;
   fournisseur?: Fournisseur;
   date_emission: string;
   date_echeance?: string;
   montant_total: number;
+  notes?: string;
   statut: StatutFactureFournisseur;
   created_at?: string;
   updated_at?: string;
 }
 
 export enum StatutFactureFournisseur {
-  EN_ATTENTE = 'EnAttente',
+  BROUILLON = 'Brouillon',
+  RECUE = 'Reçue',
   PAYEE = 'Payée',
-  PARTIELLEMENT_PAYEE = 'PartiellementPayée',
-  IMPAYEE = 'Impayée'
+  ANNULEE = 'Annulée'
 }
 
 export interface Paiement {
   id: number;
+  type?: string;
   facture_id?: number;
+  facture?: any;
   facture_fournisseur_id?: number;
+  facture_fournisseur?: FactureFournisseur;
   client_id?: number;
   fournisseur_id?: number;
   montant: number;
   date_paiement: string;
   mode_paiement: ModePaiement;
+  reference?: string;
+  notes?: string;
   created_at?: string;
   updated_at?: string;
 }

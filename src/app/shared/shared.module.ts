@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
@@ -43,7 +44,8 @@ import { StockAdjustDialogComponent } from './components/stock-adjust-dialog/sto
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatChipsModule
   ],
   exports: [
     CommonModule,
@@ -65,7 +67,8 @@ import { StockAdjustDialogComponent } from './components/stock-adjust-dialog/sto
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatChipsModule
   ]
 })
 export class SharedModule { }

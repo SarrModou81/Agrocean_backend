@@ -44,8 +44,8 @@ export class CommandesAchatService {
     return this.http.post<{ success: boolean; message: string }>(`${this.apiUrl}/${id}/valider`, {});
   }
 
-  receptionner(id: number, data: any): Observable<{ success: boolean; message: string }> {
-    return this.http.post<{ success: boolean; message: string }>(`${this.apiUrl}/${id}/receptionner`, data);
+  receptionner(id: number, data?: any): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(`${this.apiUrl}/${id}/receptionner`, data || {});
   }
 
   annuler(id: number, motif: string): Observable<{ success: boolean; message: string }> {

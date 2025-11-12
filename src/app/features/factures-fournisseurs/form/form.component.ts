@@ -78,7 +78,7 @@ export class FormComponent implements OnInit {
           commande_achat_id: facture.commande_achat_id,
           numero_facture: facture.numero_facture,
           date_emission: new Date(facture.date_emission),
-          date_echeance: new Date(facture.date_echeance),
+          date_echeance: facture.date_echeance ? new Date(facture.date_echeance) : undefined,
           statut: facture.statut,
           notes: facture.notes
         });

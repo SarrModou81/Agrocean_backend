@@ -102,11 +102,11 @@ export class FormComponent implements OnInit {
     });
 
     // Load supplier invoices
-    this.facturesService.getFournisseursAll({ per_page: 1000 }).subscribe({
-      next: (response) => {
+    this.facturesService.getFournisseurs({ per_page: 1000 }).subscribe({
+      next: (response: any) => {
         this.facturesFournisseurs = response.data;
       },
-      error: (err) => {
+      error: (err: any) => {
         this.toastr.error('Erreur lors du chargement des factures fournisseurs', 'Erreur');
       }
     });

@@ -44,8 +44,8 @@ export class LivraisonsService {
     return this.http.post<{ success: boolean; message: string }>(`${this.apiUrl}/${id}/demarrer`, {});
   }
 
-  confirmer(id: number, data: any): Observable<{ success: boolean; message: string }> {
-    return this.http.post<{ success: boolean; message: string }>(`${this.apiUrl}/${id}/confirmer`, data);
+  confirmer(id: number, data?: any): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(`${this.apiUrl}/${id}/confirmer`, data || {});
   }
 
   annuler(id: number, motif: string): Observable<{ success: boolean; message: string }> {
@@ -58,6 +58,10 @@ export class LivraisonsService {
 
   statistiques(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/statistiques/analyse`);
+  }
+
+  getBonLivraison(id: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${id}/bon-livraison`, { responseType: 'blob' });
   }
 
   genererBonLivraison(id: number): Observable<Blob> {

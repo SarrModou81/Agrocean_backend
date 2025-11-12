@@ -53,18 +53,21 @@ export enum StatutVente {
 export interface Livraison {
   id: number;
   vente_id: number;
+  vente?: Vente;
   date_livraison?: string;
+  date_livraison_prevue?: string;
   adresse_livraison: string;
   statut: StatutLivraison;
   transporteur?: string;
   numero_suivi?: string;
+  notes?: string;
   created_at?: string;
   updated_at?: string;
 }
 
 export enum StatutLivraison {
-  PLANIFIEE = 'Planifiée',
-  EN_COURS = 'EnCours',
+  EN_PREPARATION = 'En préparation',
+  EN_COURS = 'En cours',
   LIVREE = 'Livrée',
   ANNULEE = 'Annulée'
 }
@@ -73,18 +76,21 @@ export interface Facture {
   id: number;
   numero: string;
   vente_id?: number;
+  vente?: Vente;
   date_emission: string;
   date_echeance?: string;
+  montant_total: number;
   montant_ttc: number;
+  remise?: number;
+  notes?: string;
   statut: StatutFacture;
   created_at?: string;
   updated_at?: string;
 }
 
 export enum StatutFacture {
-  EN_ATTENTE = 'EnAttente',
+  BROUILLON = 'Brouillon',
+  ENVOYEE = 'Envoyée',
   PAYEE = 'Payée',
-  PARTIELLEMENT_PAYEE = 'PartiellementPayée',
-  IMPAYEE = 'Impayée',
   ANNULEE = 'Annulée'
 }

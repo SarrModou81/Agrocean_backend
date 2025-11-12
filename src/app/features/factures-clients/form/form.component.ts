@@ -77,7 +77,7 @@ export class FormComponent implements OnInit {
         this.factureForm.patchValue({
           vente_id: facture.vente_id,
           date_emission: new Date(facture.date_emission),
-          date_echeance: new Date(facture.date_echeance),
+          date_echeance: facture.date_echeance ? new Date(facture.date_echeance) : undefined,
           statut: facture.statut,
           remise: facture.remise || 0,
           notes: facture.notes

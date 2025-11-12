@@ -3,6 +3,7 @@
 export interface Produit {
   id: number;
   code: string;
+  reference: string;
   nom: string;
   description?: string;
   categorie_id: number;
