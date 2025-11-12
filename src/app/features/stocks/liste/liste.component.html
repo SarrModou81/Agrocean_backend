@@ -1,0 +1,57 @@
+<div class="stocks-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h2>Gestion des Stocks</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <div *ngIf="!loading" class="table-container">
+        <table mat-table [dataSource]="stocks" class="full-width-table">
+          <ng-container matColumnDef="produit">
+            <th mat-header-cell *matHeaderCellDef>Produit</th>
+            <td mat-cell *matCellDef="let stock">{{ stock.produit?.nom || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="entrepot">
+            <th mat-header-cell *matHeaderCellDef>Entrepôt</th>
+            <td mat-cell *matCellDef="let stock">{{ stock.entrepot?.nom || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantite">
+            <th mat-header-cell *matHeaderCellDef>Quantité</th>
+            <td mat-cell *matCellDef="let stock">{{ stock.quantite }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="numero_lot">
+            <th mat-header-cell *matHeaderCellDef>N° Lot</th>
+            <td mat-cell *matCellDef="let stock">{{ stock.numero_lot || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="statut">
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let stock">
+              <span [class.low-stock]="stock.quantite <= (stock.produit?.seuil_minimum || 0)">
+                {{ stock.quantite <= (stock.produit?.seuil_minimum || 0) ? 'Stock faible' : 'OK' }}
+              </span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+              Aucun stock trouvé
+            </td>
+          </tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

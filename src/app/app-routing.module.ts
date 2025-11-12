@@ -23,6 +23,16 @@ const routes: Routes = [
     loadChildren: () => import('./features/clients/clients.module').then(m => m.ClientsModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'stocks',
+    loadChildren: () => import('./features/stocks/stocks.module').then(m => m.StocksModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'fournisseurs',
+    loadChildren: () => import('./features/fournisseurs/fournisseurs.module').then(m => m.FournisseursModule),
+    canActivate: [AuthGuard]
+  },
   { path: '**', redirectTo: 'auth/login' }
 ];
 
