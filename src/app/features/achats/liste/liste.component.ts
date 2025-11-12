@@ -52,7 +52,7 @@ export class ListeComponent implements OnInit {
 
   onRecevoir(achat: Achat): void {
     if (confirm(`Marquer la commande ${achat.numero} comme reçue ?`)) {
-      this.achatsService.recevoir(achat.id).subscribe({
+      this.achatsService.recevoir(achat.id, {}).subscribe({
         next: () => {
           this.toastr.success('Commande reçue avec succès');
           this.loadAchats();
@@ -65,8 +65,9 @@ export class ListeComponent implements OnInit {
   }
 
   onAnnuler(achat: Achat): void {
-    if (confirm(`Annuler la commande ${achat.numero} ?`)) {
-      this.achatsService.annuler(achat.id).subscribe({
+    const raison = prompt(`Raison de l'annulation de la commande ${achat.numero} :`, 'Annulation sur demande');
+    if (raison) {
+      this.achatsService.annuler(achat.id, { raison_annulation: raison }).subscribe({
         next: () => {
           this.toastr.success('Commande annulée avec succès');
           this.loadAchats();

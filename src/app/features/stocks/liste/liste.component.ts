@@ -52,13 +52,12 @@ export class ListeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const adjustData = {
-          stock_id: stock.id,
-          type_mouvement: result.type_mouvement,
           quantite: result.quantite,
-          motif: result.motif
+          type: result.type_mouvement,
+          raison: result.motif
         };
 
-        this.stocksService.ajuster(adjustData).subscribe({
+        this.stocksService.ajuster(stock.id, adjustData).subscribe({
           next: () => {
             this.toastr.success('Stock ajusté avec succès');
             this.loadStocks();

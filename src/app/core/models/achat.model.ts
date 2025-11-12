@@ -91,3 +91,6 @@ export enum ModePaiement {
   MOBILE_MONEY = 'MobileMoney',
   CARTE_BANCAIRE = 'CarteBancaire'
 }
+
+// Alias pour compatibilité
+export type Achat = CommandeAchat;

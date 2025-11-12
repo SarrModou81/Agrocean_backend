@@ -51,8 +51,9 @@ export class ListeComponent implements OnInit {
   }
 
   onAnnuler(vente: Vente): void {
-    if (confirm(`Annuler la vente ${vente.numero} ?`)) {
-      this.ventesService.annuler(vente.id).subscribe({
+    const raison = prompt(`Raison de l'annulation de la vente ${vente.numero} :`, 'Annulation sur demande');
+    if (raison) {
+      this.ventesService.annuler(vente.id, { raison }).subscribe({
         next: () => {
           this.toastr.success('Vente annulée avec succès');
           this.loadVentes();
