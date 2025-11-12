@@ -1,0 +1,54 @@
+.ventes-container {
+  padding: 20px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.full-width-table {
+  width: 100%;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: #757575;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.status-draft {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.status-validated {
+  background-color: #e8f5e9;
+  color: #388e3c;
+}
+
+.status-delivered {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.status-cancelled {
+  background-color: #ffebee;
+  color: #c62828;
+}

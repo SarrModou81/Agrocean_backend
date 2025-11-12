@@ -33,6 +33,16 @@ const routes: Routes = [
     loadChildren: () => import('./features/fournisseurs/fournisseurs.module').then(m => m.FournisseursModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'ventes',
+    loadChildren: () => import('./features/ventes/ventes.module').then(m => m.VentesModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'achats',
+    loadChildren: () => import('./features/achats/achats.module').then(m => m.AchatsModule),
+    canActivate: [AuthGuard]
+  },
   { path: '**', redirectTo: 'auth/login' }
 ];
 
