@@ -1,77 +1,154 @@
-.dashboard-container {
-  min-height: 100vh;
+.dashboard-sidenav-container {
+  height: 100vh;
   background: var(--agrocean-background);
 }
 
+.dashboard-sidenav {
+  width: 260px;
+  background: linear-gradient(180deg, var(--agrocean-primary), var(--agrocean-primary-dark));
+  color: white;
+  border-right: none;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+
+  .sidebar-header {
+    padding: 24px 16px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    .sidebar-logo {
+      height: 50px;
+      width: auto;
+      margin-bottom: 12px;
+      filter: brightness(0) invert(1);
+    }
+
+    .sidebar-brand {
+      display: block;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: white;
+    }
+  }
+
+  .sidebar-nav {
+    padding-top: 8px;
+
+    .nav-section-label {
+      padding: 16px 16px 8px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    a {
+      color: rgba(255, 255, 255, 0.85);
+      transition: all 0.3s ease;
+      margin: 4px 8px;
+      border-radius: 8px;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      &.active-link {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        font-weight: 600;
+
+        mat-icon {
+          color: var(--agrocean-accent-light);
+        }
+      }
+
+      mat-icon {
+        color: rgba(255, 255, 255, 0.85);
+      }
+    }
+
+    mat-divider {
+      margin: 12px 16px;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.2);
+
+    .user-profile {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      mat-icon {
+        font-size: 40px;
+        width: 40px;
+        height: 40px;
+        color: white;
+      }
+
+      .user-details {
+        flex: 1;
+
+        .user-name {
+          font-size: 14px;
+          font-weight: 600;
+          color: white;
+          margin-bottom: 4px;
+        }
+
+        .user-role-badge {
+          display: inline-block;
+          padding: 2px 8px;
+          background: var(--agrocean-accent);
+          color: white;
+          border-radius: 10px;
+          font-size: 10px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
+    }
+  }
+}
+
 .dashboard-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
   background: white !important;
   color: var(--agrocean-text-primary) !important;
-  box-shadow: 0 2px 8px var(--agrocean-shadow);
-  padding: 8px 24px;
-  height: auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 0 24px;
+  height: 64px;
 
-  .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    .logo {
-      height: 40px;
-      width: auto;
-    }
-
-    .logo-text {
-      font-size: 24px;
-      font-weight: 700;
-      background: var(--agrocean-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: 1px;
-    }
+  .page-title-header {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--agrocean-text-primary);
   }
 
   .toolbar-spacer {
     flex: 1 1 auto;
   }
 
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 16px;
-    background: var(--agrocean-background);
-    border-radius: 24px;
-    margin-right: 12px;
-
-    mat-icon {
-      color: var(--agrocean-primary);
-    }
-
-    .user-name {
-      font-weight: 600;
-      color: var(--agrocean-text-primary);
-    }
-
-    .user-role {
-      padding: 4px 12px;
-      background: var(--agrocean-primary);
-      color: white;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+  button mat-icon {
+    color: var(--agrocean-text-secondary);
+    transition: color 0.3s ease;
   }
 
-  .logout-btn {
-    mat-icon {
-      color: var(--agrocean-warn);
-    }
+  button:hover mat-icon {
+    color: var(--agrocean-primary);
+  }
+
+  .logout-btn mat-icon {
+    color: var(--agrocean-warn);
   }
 }
 
@@ -82,39 +159,31 @@
 }
 
 .welcome-section {
-  background: linear-gradient(135deg, var(--agrocean-primary), var(--agrocean-accent));
-  color: white;
-  padding: 40px;
-  border-radius: 16px;
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
   margin-bottom: 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 16px var(--agrocean-shadow);
+  box-shadow: 0 2px 8px var(--agrocean-shadow);
+  border-left: 4px solid var(--agrocean-primary);
 
   .welcome-text {
     h1 {
       margin: 0 0 8px 0;
-      font-size: 36px;
+      font-size: 28px;
       font-weight: 700;
-      color: white;
+      color: var(--agrocean-text-primary);
     }
 
     p {
       margin: 0;
-      font-size: 16px;
-      opacity: 0.9;
+      font-size: 14px;
+      color: var(--agrocean-text-secondary);
       text-transform: capitalize;
     }
   }
 
   .welcome-illustration {
-    mat-icon {
-      font-size: 80px;
-      width: 80px;
-      height: 80px;
-      opacity: 0.3;
-    }
+    display: none;
   }
 }
 
@@ -337,21 +406,21 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard-sidenav-container {
+    .dashboard-sidenav {
+      width: 240px;
+    }
+  }
+
   .dashboard-content {
     padding: 16px;
   }
 
   .welcome-section {
-    padding: 24px;
-    flex-direction: column;
-    text-align: center;
+    padding: 20px;
 
     .welcome-text h1 {
-      font-size: 24px;
-    }
-
-    .welcome-illustration {
-      margin-top: 16px;
+      font-size: 22px;
     }
   }
 
@@ -368,19 +437,10 @@
   }
 
   .dashboard-toolbar {
-    padding: 8px 16px;
+    padding: 0 16px;
 
-    .logo-container .logo-text {
-      font-size: 18px;
-    }
-
-    .user-info {
-      padding: 4px 8px;
-      font-size: 12px;
-
-      .user-name {
-        display: none;
-      }
+    .page-title-header {
+      font-size: 16px;
     }
   }
 }

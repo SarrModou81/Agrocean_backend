@@ -1,23 +1,84 @@
-<div class="dashboard-container">
-  <!-- Header Toolbar -->
-  <mat-toolbar class="dashboard-toolbar">
-    <div class="logo-container">
-      <img src="assets/logo.svg" alt="AGROCEAN Logo" class="logo">
-      <span class="logo-text">AGROCEAN</span>
+<mat-sidenav-container class="dashboard-sidenav-container">
+  <!-- Sidebar -->
+  <mat-sidenav mode="side" opened class="dashboard-sidenav">
+    <div class="sidebar-header">
+      <img src="assets/logo.svg" alt="AGROCEAN Logo" class="sidebar-logo">
+      <span class="sidebar-brand">AGROCEAN</span>
     </div>
-    <span class="toolbar-spacer"></span>
-    <span *ngIf="currentUser" class="user-info">
-      <mat-icon>person</mat-icon>
-      <span class="user-name">{{ currentUser.prenom }} {{ currentUser.nom }}</span>
-      <span class="user-role">{{ currentUser.role }}</span>
-    </span>
-    <button mat-icon-button (click)="logout()" matTooltip="Déconnexion" class="logout-btn">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </mat-toolbar>
 
-  <!-- Dashboard Content -->
-  <div class="dashboard-content">
+    <mat-nav-list class="sidebar-nav">
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Tableau de Bord</span>
+      </a>
+
+      <mat-divider></mat-divider>
+
+      <div class="nav-section-label">GESTION</div>
+
+      <a mat-list-item routerLink="/produits" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>inventory_2</mat-icon>
+        <span matListItemTitle>Produits</span>
+      </a>
+
+      <a mat-list-item routerLink="/stocks" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>warehouse</mat-icon>
+        <span matListItemTitle>Stocks</span>
+      </a>
+
+      <mat-divider></mat-divider>
+
+      <div class="nav-section-label">COMMERCIAL</div>
+
+      <a mat-list-item routerLink="/ventes" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>shopping_cart</mat-icon>
+        <span matListItemTitle>Ventes</span>
+      </a>
+
+      <a mat-list-item routerLink="/achats" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>local_shipping</mat-icon>
+        <span matListItemTitle>Achats</span>
+      </a>
+
+      <a mat-list-item routerLink="/clients" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>people</mat-icon>
+        <span matListItemTitle>Clients</span>
+      </a>
+
+      <a mat-list-item routerLink="/fournisseurs" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>business</mat-icon>
+        <span matListItemTitle>Fournisseurs</span>
+      </a>
+    </mat-nav-list>
+
+    <div class="sidebar-footer">
+      <mat-divider></mat-divider>
+      <div class="user-profile">
+        <mat-icon>account_circle</mat-icon>
+        <div class="user-details">
+          <div class="user-name">{{ currentUser?.prenom }} {{ currentUser?.nom }}</div>
+          <div class="user-role-badge">{{ currentUser?.role }}</div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content>
+    <!-- Header Toolbar -->
+    <mat-toolbar class="dashboard-toolbar">
+      <span class="page-title-header">{{ getGreeting() }}</span>
+      <span class="toolbar-spacer"></span>
+      <button mat-icon-button matTooltip="Notifications">
+        <mat-icon>notifications</mat-icon>
+      </button>
+      <button mat-icon-button (click)="logout()" matTooltip="Déconnexion" class="logout-btn">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
     <!-- Welcome Section -->
     <div class="welcome-section fade-in">
       <div class="welcome-text">
@@ -84,5 +145,6 @@
         </mat-card>
       </div>
     </div>
-  </div>
-</div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
