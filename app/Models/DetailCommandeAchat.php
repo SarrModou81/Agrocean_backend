@@ -41,5 +41,9 @@ class DetailCommandeAchat extends Model
         static::creating(function ($detail) {
             $detail->sous_total = $detail->quantite * $detail->prix_unitaire;
         });
+
+        static::updating(function ($detail) {
+            $detail->sous_total = $detail->quantite * $detail->prix_unitaire;
+        });
     }
 }

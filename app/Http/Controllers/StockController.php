@@ -40,8 +40,8 @@ class StockController extends Controller
         // Recherche par nom de produit
         if ($request->has('search')) {
             $query->whereHas('produit', function($q) use ($request) {
-                $q->where('nom', 'ILIKE', '%' . $request->search . '%')
-                    ->orWhere('code', 'ILIKE', '%' . $request->search . '%');
+                $q->where('nom', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('code', 'LIKE', '%' . $request->search . '%');
             });
         }
 
