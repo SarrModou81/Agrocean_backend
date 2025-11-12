@@ -1,0 +1,118 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h2>{{ isEditMode ? 'Modifier le Produit' : 'Nouveau Produit' }}</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="produitForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Reference -->
+          <mat-form-field appearance="outline">
+            <mat-label>Référence</mat-label>
+            <input matInput formControlName="reference" placeholder="REF-001">
+            <mat-error *ngIf="produitForm.get('reference')?.hasError('required')">
+              La référence est requise
+            </mat-error>
+            <mat-error *ngIf="produitForm.get('reference')?.hasError('minlength')">
+              Minimum 3 caractères
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Nom -->
+          <mat-form-field appearance="outline">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="nom" placeholder="Nom du produit">
+            <mat-error *ngIf="produitForm.get('nom')?.hasError('required')">
+              Le nom est requis
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Catégorie -->
+          <mat-form-field appearance="outline">
+            <mat-label>Catégorie</mat-label>
+            <mat-select formControlName="categorie_id">
+              <mat-option *ngFor="let cat of categories" [value]="cat.id">
+                {{ cat.nom }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="produitForm.get('categorie_id')?.hasError('required')">
+              La catégorie est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Unité de mesure -->
+          <mat-form-field appearance="outline">
+            <mat-label>Unité de mesure</mat-label>
+            <mat-select formControlName="unite_mesure">
+              <mat-option value="kg">Kilogramme (kg)</mat-option>
+              <mat-option value="g">Gramme (g)</mat-option>
+              <mat-option value="l">Litre (l)</mat-option>
+              <mat-option value="ml">Millilitre (ml)</mat-option>
+              <mat-option value="piece">Pièce</mat-option>
+              <mat-option value="boite">Boîte</mat-option>
+              <mat-option value="carton">Carton</mat-option>
+            </mat-select>
+            <mat-error *ngIf="produitForm.get('unite_mesure')?.hasError('required')">
+              L'unité est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Prix d'achat -->
+          <mat-form-field appearance="outline">
+            <mat-label>Prix d'achat</mat-label>
+            <input matInput type="number" formControlName="prix_achat" placeholder="0">
+            <span matTextSuffix>FCFA</span>
+            <mat-error *ngIf="produitForm.get('prix_achat')?.hasError('required')">
+              Le prix d'achat est requis
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Prix de vente -->
+          <mat-form-field appearance="outline">
+            <mat-label>Prix de vente</mat-label>
+            <input matInput type="number" formControlName="prix_vente" placeholder="0">
+            <span matTextSuffix>FCFA</span>
+            <mat-error *ngIf="produitForm.get('prix_vente')?.hasError('required')">
+              Le prix de vente est requis
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Seuil minimum -->
+          <mat-form-field appearance="outline">
+            <mat-label>Seuil minimum</mat-label>
+            <input matInput type="number" formControlName="seuil_minimum" placeholder="10">
+            <mat-error *ngIf="produitForm.get('seuil_minimum')?.hasError('required')">
+              Le seuil minimum est requis
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Seuil maximum -->
+          <mat-form-field appearance="outline">
+            <mat-label>Seuil maximum</mat-label>
+            <input matInput type="number" formControlName="seuil_maximum" placeholder="1000">
+          </mat-form-field>
+
+          <!-- Description -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" rows="3" placeholder="Description du produit"></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button mat-button type="button" (click)="onCancel()" [disabled]="loading">
+            Annuler
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || produitForm.invalid">
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            <span *ngIf="!loading">{{ isEditMode ? 'Modifier' : 'Créer' }}</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

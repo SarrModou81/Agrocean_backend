@@ -34,22 +34,76 @@
     <div class="quick-actions">
       <h2>Actions Rapides</h2>
       <div class="actions-grid">
-        <button mat-raised-button color="primary">
+        <button mat-raised-button color="primary" routerLink="/ventes/nouvelle">
           <mat-icon>add_shopping_cart</mat-icon>
           Nouvelle Vente
         </button>
-        <button mat-raised-button color="accent">
+        <button mat-raised-button color="accent" routerLink="/produits/nouveau">
           <mat-icon>add_box</mat-icon>
           Ajouter Produit
         </button>
-        <button mat-raised-button>
+        <button mat-raised-button routerLink="/rapports">
           <mat-icon>assessment</mat-icon>
           Voir Rapports
         </button>
-        <button mat-raised-button>
+        <button mat-raised-button routerLink="/stocks">
           <mat-icon>inventory</mat-icon>
           Gérer Stock
         </button>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="navigation-section">
+      <h2>Accès Rapide aux Modules</h2>
+      <div class="nav-grid">
+        <mat-card class="nav-card" routerLink="/produits">
+          <mat-card-content>
+            <mat-icon color="primary">inventory_2</mat-icon>
+            <h3>Produits</h3>
+            <p>Gérer le catalogue de produits</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="nav-card" routerLink="/stocks">
+          <mat-card-content>
+            <mat-icon color="primary">warehouse</mat-icon>
+            <h3>Stocks</h3>
+            <p>Gérer les stocks et entrepôts</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="nav-card" routerLink="/ventes">
+          <mat-card-content>
+            <mat-icon color="primary">shopping_cart</mat-icon>
+            <h3>Ventes</h3>
+            <p>Gérer les ventes et clients</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="nav-card" routerLink="/achats">
+          <mat-card-content>
+            <mat-icon color="primary">local_shipping</mat-icon>
+            <h3>Achats</h3>
+            <p>Gérer les commandes d'achat</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="nav-card" routerLink="/clients">
+          <mat-card-content>
+            <mat-icon color="primary">people</mat-icon>
+            <h3>Clients</h3>
+            <p>Gérer les clients</p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="nav-card" routerLink="/fournisseurs">
+          <mat-card-content>
+            <mat-icon color="primary">business</mat-icon>
+            <h3>Fournisseurs</h3>
+            <p>Gérer les fournisseurs</p>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
   </div>

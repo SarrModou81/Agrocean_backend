@@ -13,6 +13,11 @@ const routes: Routes = [
     loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'produits',
+    loadChildren: () => import('./features/produits/produits.module').then(m => m.ProduitsModule),
+    canActivate: [AuthGuard]
+  },
   { path: '**', redirectTo: 'auth/login' }
 ];
 
