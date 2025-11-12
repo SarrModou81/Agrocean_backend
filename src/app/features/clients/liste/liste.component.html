@@ -40,9 +40,22 @@
             <td mat-cell *matCellDef="let client">{{ client.telephone }}</td>
           </ng-container>
 
-          <ng-container matColumnDef="adresse">
-            <th mat-header-cell *matHeaderCellDef>Adresse</th>
-            <td mat-cell *matCellDef="let client">{{ client.adresse || '-' }}</td>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Type</th>
+            <td mat-cell *matCellDef="let client">
+              <mat-chip [color]="client.type === 'Entreprise' ? 'primary' : 'accent'">
+                {{ client.type }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="solde">
+            <th mat-header-cell *matHeaderCellDef>Solde</th>
+            <td mat-cell *matCellDef="let client">
+              <span [class.negative]="client.solde && client.solde < 0">
+                {{ client.solde || 0 | number:'1.0-0' }} FCFA
+              </span>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">

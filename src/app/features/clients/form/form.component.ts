@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { VentesService } from '../../../core/services/ventes.service';
+import { ClientsService } from '../../../core/services/clients.service';
 
 @Component({
   selector: 'app-form',
@@ -15,9 +15,14 @@ export class FormComponent implements OnInit {
   isEditMode = false;
   clientId?: number;
 
+  typesClient = [
+    { value: 'Particulier', label: 'Particulier' },
+    { value: 'Entreprise', label: 'Entreprise' }
+  ];
+
   constructor(
     private fb: FormBuilder,
-    private ventesService: VentesService,
+    private clientsService: ClientsService,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService
@@ -29,8 +34,9 @@ export class FormComponent implements OnInit {
       email: ['', [Validators.email]],
       telephone: ['', [Validators.required]],
       adresse: [''],
-      ville: [''],
-      pays: ['Sénégal']
+      type: ['Particulier', Validators.required],
+      credit_max: [0, [Validators.min(0)]],
+      solde: [0]
     });
 
     this.route.params.subscribe(params => {
@@ -46,7 +52,7 @@ export class FormComponent implements OnInit {
     if (!this.clientId) return;
 
     this.loading = true;
-    this.ventesService.getClientById(this.clientId).subscribe({
+    this.clientsService.getById(this.clientId).subscribe({
       next: (response) => {
         this.clientForm.patchValue(response.data);
         this.loading = false;
@@ -69,8 +75,8 @@ export class FormComponent implements OnInit {
     const formData = this.clientForm.value;
 
     const request = this.isEditMode && this.clientId
-      ? this.ventesService.updateClient(this.clientId, formData)
-      : this.ventesService.createClient(formData);
+      ? this.clientsService.update(this.clientId, formData)
+      : this.clientsService.create(formData);
 
     request.subscribe({
       next: () => {

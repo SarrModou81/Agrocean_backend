@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { VentesService } from '../../../core/services/ventes.service';
+import { ClientsService } from '../../../core/services/clients.service';
 import { Client } from '../../../core/models';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
@@ -12,7 +12,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
   styleUrl: './liste.component.scss'
 })
 export class ListeComponent implements OnInit {
-  displayedColumns: string[] = ['nom', 'email', 'telephone', 'adresse', 'actions'];
+  displayedColumns: string[] = ['nom', 'email', 'telephone', 'type', 'solde', 'actions'];
   clients: Client[] = [];
   loading = false;
   searchTerm = '';
@@ -21,7 +21,7 @@ export class ListeComponent implements OnInit {
   currentPage = 1;
 
   constructor(
-    private ventesService: VentesService,
+    private clientsService: ClientsService,
     private router: Router,
     private dialog: MatDialog,
     private toastr: ToastrService
@@ -39,7 +39,7 @@ export class ListeComponent implements OnInit {
       search: this.searchTerm || undefined
     };
 
-    this.ventesService.getAllClients(params).subscribe({
+    this.clientsService.getAll(params).subscribe({
       next: (response) => {
         this.clients = response.data;
         this.totalItems = response.total;
@@ -80,7 +80,7 @@ export class ListeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.ventesService.deleteClient(client.id).subscribe({
+        this.clientsService.delete(client.id).subscribe({
           next: () => {
             this.toastr.success('Client supprimé avec succès');
             this.loadClients();
