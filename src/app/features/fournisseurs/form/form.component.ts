@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AchatsService } from '../../../core/services/achats.service';
 import { ToastrService } from 'ngx-toastr';
+import { FournisseursService } from '../../../core/services/fournisseurs.service';
 
 @Component({
   selector: 'app-form',
@@ -11,58 +11,50 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class FormComponent implements OnInit {
   fournisseurForm!: FormGroup;
+  loading = false;
   isEditMode = false;
   fournisseurId?: number;
-  loading = false;
 
   constructor(
     private fb: FormBuilder,
-    private achatsService: AchatsService,
-    private router: Router,
+    private fournisseursService: FournisseursService,
     private route: ActivatedRoute,
+    private router: Router,
     private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.initForm();
-    this.checkEditMode();
-  }
-
-  initForm(): void {
     this.fournisseurForm = this.fb.group({
       nom: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.email]],
+      contact: [''],
       telephone: ['', [Validators.required]],
       adresse: [''],
-      ville: [''],
-      pays: ['Sénégal']
+      evaluation: [0],
+      conditions: ['']
     });
-  }
 
-  checkEditMode(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.isEditMode = true;
-      this.fournisseurId = +id;
-      this.loadFournisseur();
-    }
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.isEditMode = true;
+        this.fournisseurId = +params['id'];
+        this.loadFournisseur();
+      }
+    });
   }
 
   loadFournisseur(): void {
     if (!this.fournisseurId) return;
 
     this.loading = true;
-    this.achatsService.getAllFournisseurs().subscribe({
+    this.fournisseursService.getById(this.fournisseurId).subscribe({
       next: (response) => {
-        const fournisseur = response.data.find((f: any) => f.id === this.fournisseurId);
-        if (fournisseur) {
-          this.fournisseurForm.patchValue(fournisseur);
-        }
+        this.fournisseurForm.patchValue(response.data);
         this.loading = false;
       },
       error: (err) => {
         this.toastr.error('Erreur lors du chargement', 'Erreur');
         this.loading = false;
+        this.router.navigate(['/fournisseurs']);
       }
     });
   }
@@ -76,9 +68,9 @@ export class FormComponent implements OnInit {
     this.loading = true;
     const formData = this.fournisseurForm.value;
 
-    const request = this.isEditMode
-      ? this.achatsService.updateFournisseur(this.fournisseurId!, formData)
-      : this.achatsService.createFournisseur(formData);
+    const request = this.isEditMode && this.fournisseurId
+      ? this.fournisseursService.update(this.fournisseurId, formData)
+      : this.fournisseursService.create(formData);
 
     request.subscribe({
       next: () => {
@@ -89,7 +81,7 @@ export class FormComponent implements OnInit {
         this.router.navigate(['/fournisseurs']);
       },
       error: (err) => {
-        this.toastr.error(err.message || 'Erreur lors de l\'enregistrement', 'Erreur');
+        this.toastr.error('Erreur lors de l\'enregistrement', 'Erreur');
         this.loading = false;
       }
     });

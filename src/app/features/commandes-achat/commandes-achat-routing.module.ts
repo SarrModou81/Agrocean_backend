@@ -5,7 +5,7 @@ import { FormComponent } from './form/form.component';
 
 const routes: Routes = [
   { path: '', component: ListeComponent },
-  { path: 'nouveau', component: FormComponent },
+  { path: 'nouvelle', component: FormComponent },
   { path: 'edit/:id', component: FormComponent }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FournisseursRoutingModule { }
+export class CommandesAchatRoutingModule { }

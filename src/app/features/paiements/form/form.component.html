@@ -1,0 +1,114 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h2>{{ isEditMode ? 'Modifier le Paiement' : 'Nouveau Paiement' }}</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="paiementForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Type -->
+          <mat-form-field appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option *ngFor="let type of types" [value]="type.value">
+                {{ type.label }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="paiementForm.get('type')?.hasError('required')">
+              Le type est requis
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Facture Client (si type = Client) -->
+          <mat-form-field appearance="outline" *ngIf="paiementForm.get('type')?.value === 'Client'">
+            <mat-label>Facture Client</mat-label>
+            <mat-select formControlName="facture_id">
+              <mat-option *ngFor="let facture of facturesClients" [value]="facture.id">
+                {{ facture.numero }} - {{ facture.vente?.client?.nom }} ({{ facture.montant_total | number:'1.0-0' }} FCFA)
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="paiementForm.get('facture_id')?.hasError('required')">
+              La facture est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Facture Fournisseur (si type = Fournisseur) -->
+          <mat-form-field appearance="outline" *ngIf="paiementForm.get('type')?.value === 'Fournisseur'">
+            <mat-label>Facture Fournisseur</mat-label>
+            <mat-select formControlName="facture_fournisseur_id">
+              <mat-option *ngFor="let facture of facturesFournisseurs" [value]="facture.id">
+                {{ facture.numero_facture }} - {{ facture.commande_achat?.fournisseur?.nom }} ({{ facture.montant_total | number:'1.0-0' }} FCFA)
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="paiementForm.get('facture_fournisseur_id')?.hasError('required')">
+              La facture est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Montant -->
+          <mat-form-field appearance="outline">
+            <mat-label>Montant</mat-label>
+            <input matInput type="number" formControlName="montant" min="0">
+            <span matTextSuffix>FCFA</span>
+            <mat-error *ngIf="paiementForm.get('montant')?.hasError('required')">
+              Le montant est requis
+            </mat-error>
+            <mat-error *ngIf="paiementForm.get('montant')?.hasError('min')">
+              Le montant doit être positif
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Mode de Paiement -->
+          <mat-form-field appearance="outline">
+            <mat-label>Mode de paiement</mat-label>
+            <mat-select formControlName="mode_paiement">
+              <mat-option *ngFor="let mode of modesPaiement" [value]="mode.value">
+                {{ mode.label }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="paiementForm.get('mode_paiement')?.hasError('required')">
+              Le mode de paiement est requis
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Date Paiement -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date de paiement</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date_paiement">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="paiementForm.get('date_paiement')?.hasError('required')">
+              La date est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Référence -->
+          <mat-form-field appearance="outline">
+            <mat-label>Référence</mat-label>
+            <input matInput formControlName="reference" placeholder="Numéro de chèque, référence virement, etc.">
+          </mat-form-field>
+
+          <!-- Notes -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Notes</mat-label>
+            <textarea matInput formControlName="notes" rows="3" placeholder="Notes additionnelles"></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button mat-button type="button" (click)="onCancel()" [disabled]="loading">
+            Annuler
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || paiementForm.invalid">
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            <span *ngIf="!loading">{{ isEditMode ? 'Modifier' : 'Créer' }}</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,75 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h2>{{ isEditMode ? 'Modifier la Livraison' : 'Nouvelle Livraison' }}</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="livraisonForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Vente -->
+          <mat-form-field appearance="outline">
+            <mat-label>Vente</mat-label>
+            <mat-select formControlName="vente_id">
+              <mat-option *ngFor="let vente of ventes" [value]="vente.id">
+                {{ vente.numero }} - {{ vente.client?.nom }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="livraisonForm.get('vente_id')?.hasError('required')">
+              La vente est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Date Livraison Prévue -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date de livraison prévue</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date_livraison_prevue">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="livraisonForm.get('date_livraison_prevue')?.hasError('required')">
+              La date est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Statut -->
+          <mat-form-field appearance="outline">
+            <mat-label>Statut</mat-label>
+            <mat-select formControlName="statut">
+              <mat-option *ngFor="let statut of statuts" [value]="statut.value">
+                {{ statut.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Adresse Livraison -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Adresse de livraison</mat-label>
+            <textarea matInput formControlName="adresse_livraison" rows="2" placeholder="Adresse complète de livraison"></textarea>
+            <mat-error *ngIf="livraisonForm.get('adresse_livraison')?.hasError('required')">
+              L'adresse est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Notes -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Notes</mat-label>
+            <textarea matInput formControlName="notes" rows="3" placeholder="Notes additionnelles"></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button mat-button type="button" (click)="onCancel()" [disabled]="loading">
+            Annuler
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || livraisonForm.invalid">
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            <span *ngIf="!loading">{{ isEditMode ? 'Modifier' : 'Créer' }}</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

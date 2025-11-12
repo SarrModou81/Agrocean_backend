@@ -1,0 +1,87 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h2>{{ isEditMode ? 'Modifier la Facture Client' : 'Nouvelle Facture Client' }}</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="factureForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Vente -->
+          <mat-form-field appearance="outline">
+            <mat-label>Vente</mat-label>
+            <mat-select formControlName="vente_id">
+              <mat-option *ngFor="let vente of ventes" [value]="vente.id">
+                {{ vente.numero }} - {{ vente.client?.nom }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="factureForm.get('vente_id')?.hasError('required')">
+              La vente est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Date Émission -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date d'émission</mat-label>
+            <input matInput [matDatepicker]="pickerEmission" formControlName="date_emission">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerEmission"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEmission></mat-datepicker>
+            <mat-error *ngIf="factureForm.get('date_emission')?.hasError('required')">
+              La date est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Date Échéance -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date d'échéance</mat-label>
+            <input matInput [matDatepicker]="pickerEcheance" formControlName="date_echeance">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerEcheance"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEcheance></mat-datepicker>
+            <mat-error *ngIf="factureForm.get('date_echeance')?.hasError('required')">
+              La date est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Statut -->
+          <mat-form-field appearance="outline">
+            <mat-label>Statut</mat-label>
+            <mat-select formControlName="statut">
+              <mat-option *ngFor="let statut of statuts" [value]="statut.value">
+                {{ statut.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Remise -->
+          <mat-form-field appearance="outline">
+            <mat-label>Remise</mat-label>
+            <input matInput type="number" formControlName="remise" min="0">
+            <span matTextSuffix>FCFA</span>
+            <mat-error *ngIf="factureForm.get('remise')?.hasError('min')">
+              La remise doit être positive
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Notes -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Notes</mat-label>
+            <textarea matInput formControlName="notes" rows="3" placeholder="Notes additionnelles"></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button mat-button type="button" (click)="onCancel()" [disabled]="loading">
+            Annuler
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || factureForm.invalid">
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            <span *ngIf="!loading">{{ isEditMode ? 'Modifier' : 'Créer' }}</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

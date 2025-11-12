@@ -60,9 +60,34 @@
         <span matListItemTitle>Fournisseurs</span>
       </a>
 
+      <a mat-list-item routerLink="/commandes-achat" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>request_quote</mat-icon>
+        <span matListItemTitle>Commandes d'Achat</span>
+      </a>
+
+      <a mat-list-item routerLink="/livraisons" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>local_shipping</mat-icon>
+        <span matListItemTitle>Livraisons</span>
+      </a>
+
       <mat-divider></mat-divider>
 
       <div class="nav-section-label">FINANCES</div>
+
+      <a mat-list-item routerLink="/factures-clients" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>receipt</mat-icon>
+        <span matListItemTitle>Factures Clients</span>
+      </a>
+
+      <a mat-list-item routerLink="/factures-fournisseurs" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>receipt_long</mat-icon>
+        <span matListItemTitle>Factures Fournisseurs</span>
+      </a>
+
+      <a mat-list-item routerLink="/paiements" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>payment</mat-icon>
+        <span matListItemTitle>Paiements</span>
+      </a>
 
       <a mat-list-item routerLink="/finances" routerLinkActive="active-link">
         <mat-icon matListItemIcon>account_balance</mat-icon>

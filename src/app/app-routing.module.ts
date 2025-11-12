@@ -43,6 +43,26 @@ const routes: Routes = [
         loadChildren: () => import('./features/fournisseurs/fournisseurs.module').then(m => m.FournisseursModule)
       },
       {
+        path: 'commandes-achat',
+        loadChildren: () => import('./features/commandes-achat/commandes-achat.module').then(m => m.CommandesAchatModule)
+      },
+      {
+        path: 'livraisons',
+        loadChildren: () => import('./features/livraisons/livraisons.module').then(m => m.LivraisonsModule)
+      },
+      {
+        path: 'factures-clients',
+        loadChildren: () => import('./features/factures-clients/factures-clients.module').then(m => m.FacturesClientsModule)
+      },
+      {
+        path: 'factures-fournisseurs',
+        loadChildren: () => import('./features/factures-fournisseurs/factures-fournisseurs.module').then(m => m.FacturesFournisseursModule)
+      },
+      {
+        path: 'paiements',
+        loadChildren: () => import('./features/paiements/paiements.module').then(m => m.PaiementsModule)
+      },
+      {
         path: 'ventes',
         loadChildren: () => import('./features/ventes/ventes.module').then(m => m.VentesModule)
       },

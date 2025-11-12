@@ -1,0 +1,133 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h2>{{ isEditMode ? 'Modifier la Commande d\'Achat' : 'Nouvelle Commande d\'Achat' }}</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="commandeForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Fournisseur -->
+          <mat-form-field appearance="outline">
+            <mat-label>Fournisseur</mat-label>
+            <mat-select formControlName="fournisseur_id">
+              <mat-option *ngFor="let fournisseur of fournisseurs" [value]="fournisseur.id">
+                {{ fournisseur.nom }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="commandeForm.get('fournisseur_id')?.hasError('required')">
+              Le fournisseur est requis
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Date Commande -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date de commande</mat-label>
+            <input matInput [matDatepicker]="pickerCommande" formControlName="date_commande">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerCommande"></mat-datepicker-toggle>
+            <mat-datepicker #pickerCommande></mat-datepicker>
+            <mat-error *ngIf="commandeForm.get('date_commande')?.hasError('required')">
+              La date est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Date Livraison Prévue -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date de livraison prévue</mat-label>
+            <input matInput [matDatepicker]="pickerLivraison" formControlName="date_livraison_prevue">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerLivraison"></mat-datepicker-toggle>
+            <mat-datepicker #pickerLivraison></mat-datepicker>
+            <mat-error *ngIf="commandeForm.get('date_livraison_prevue')?.hasError('required')">
+              La date est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Statut -->
+          <mat-form-field appearance="outline">
+            <mat-label>Statut</mat-label>
+            <mat-select formControlName="statut">
+              <mat-option *ngFor="let statut of statuts" [value]="statut.value">
+                {{ statut.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Détails de la commande -->
+        <div class="details-section">
+          <div class="section-header">
+            <h3>Produits</h3>
+            <button mat-raised-button type="button" color="accent" (click)="addDetail()">
+              <mat-icon>add</mat-icon>
+              Ajouter un produit
+            </button>
+          </div>
+
+          <div formArrayName="details" class="details-list">
+            <div *ngFor="let detail of details.controls; let i = index" [formGroupName]="i" class="detail-row">
+              <mat-form-field appearance="outline" class="produit-field">
+                <mat-label>Produit</mat-label>
+                <input matInput formControlName="produit_search" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete"
+                                  [displayWith]="displayProduitFn.bind(this)"
+                                  (optionSelected)="onProduitSelected(i, $event.option.value)">
+                  <mat-option *ngFor="let produit of filteredProduits[i] | async" [value]="produit">
+                    {{ produit.nom }} - {{ produit.reference }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error *ngIf="detail.get('produit_id')?.hasError('required')">
+                  Le produit est requis
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="quantite-field">
+                <mat-label>Quantité</mat-label>
+                <input matInput type="number" formControlName="quantite" min="1">
+                <mat-error *ngIf="detail.get('quantite')?.hasError('required')">
+                  Requis
+                </mat-error>
+                <mat-error *ngIf="detail.get('quantite')?.hasError('min')">
+                  Min: 1
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="prix-field">
+                <mat-label>Prix unitaire</mat-label>
+                <input matInput type="number" formControlName="prix_unitaire" min="0">
+                <span matTextSuffix>FCFA</span>
+                <mat-error *ngIf="detail.get('prix_unitaire')?.hasError('required')">
+                  Requis
+                </mat-error>
+              </mat-form-field>
+
+              <div class="montant-field">
+                <strong>{{ (detail.get('quantite')?.value || 0) * (detail.get('prix_unitaire')?.value || 0) | number:'1.0-0' }} FCFA</strong>
+              </div>
+
+              <button mat-icon-button type="button" color="warn" (click)="removeDetail(i)" [disabled]="details.length === 1">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="total-section">
+            <h3>Montant Total: {{ getMontantTotal() | number:'1.0-0' }} FCFA</h3>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button mat-button type="button" (click)="onCancel()" [disabled]="loading">
+            Annuler
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || commandeForm.invalid">
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            <span *ngIf="!loading">{{ isEditMode ? 'Modifier' : 'Créer' }}</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

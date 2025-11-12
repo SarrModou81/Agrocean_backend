@@ -1,0 +1,112 @@
+<div class="livraisons-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h2>Gestion des Livraisons</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="actions-bar">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Rechercher</mat-label>
+          <input matInput [(ngModel)]="searchTerm" (keyup.enter)="onSearch()" placeholder="Client, adresse...">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="onCreate()">
+          <mat-icon>add</mat-icon>
+          Nouvelle Livraison
+        </button>
+      </div>
+
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <div *ngIf="!loading" class="table-container">
+        <table mat-table [dataSource]="livraisons" class="full-width-table">
+          <ng-container matColumnDef="vente">
+            <th mat-header-cell *matHeaderCellDef>Vente</th>
+            <td mat-cell *matCellDef="let livraison">{{ livraison.vente?.numero || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="client">
+            <th mat-header-cell *matHeaderCellDef>Client</th>
+            <td mat-cell *matCellDef="let livraison">{{ livraison.vente?.client?.nom || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="adresse_livraison">
+            <th mat-header-cell *matHeaderCellDef>Adresse</th>
+            <td mat-cell *matCellDef="let livraison">{{ livraison.adresse_livraison }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="date_livraison_prevue">
+            <th mat-header-cell *matHeaderCellDef>Date Prévue</th>
+            <td mat-cell *matCellDef="let livraison">{{ livraison.date_livraison_prevue | date:'dd/MM/yyyy' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="statut">
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let livraison">
+              <mat-chip [color]="getStatutColor(livraison.statut)">
+                {{ livraison.statut }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let livraison">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="onDemarrer(livraison)" *ngIf="canDemarrer(livraison)">
+                  <mat-icon color="primary">local_shipping</mat-icon>
+                  <span>Démarrer</span>
+                </button>
+                <button mat-menu-item (click)="onConfirmer(livraison)" *ngIf="canConfirmer(livraison)">
+                  <mat-icon color="primary">check_circle</mat-icon>
+                  <span>Confirmer</span>
+                </button>
+                <button mat-menu-item (click)="onBonLivraison(livraison)">
+                  <mat-icon>receipt</mat-icon>
+                  <span>Bon de livraison</span>
+                </button>
+                <button mat-menu-item (click)="onEdit(livraison)" *ngIf="canEdit(livraison)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Modifier</span>
+                </button>
+                <button mat-menu-item (click)="onAnnuler(livraison)" *ngIf="canAnnuler(livraison)">
+                  <mat-icon color="warn">cancel</mat-icon>
+                  <span>Annuler</span>
+                </button>
+                <button mat-menu-item (click)="onDelete(livraison)" *ngIf="canDelete(livraison)">
+                  <mat-icon color="warn">delete</mat-icon>
+                  <span>Supprimer</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+              Aucune livraison trouvée
+            </td>
+          </tr>
+        </table>
+
+        <mat-paginator
+          [length]="totalItems"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[5, 10, 25, 50]"
+          (page)="onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

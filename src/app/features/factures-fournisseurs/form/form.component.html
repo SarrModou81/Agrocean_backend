@@ -1,0 +1,86 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h2>{{ isEditMode ? 'Modifier la Facture Fournisseur' : 'Nouvelle Facture Fournisseur' }}</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="factureForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Commande d'Achat -->
+          <mat-form-field appearance="outline">
+            <mat-label>Commande d'Achat</mat-label>
+            <mat-select formControlName="commande_achat_id">
+              <mat-option *ngFor="let commande of commandes" [value]="commande.id">
+                {{ commande.numero }} - {{ commande.fournisseur?.nom }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="factureForm.get('commande_achat_id')?.hasError('required')">
+              La commande est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Numéro Facture -->
+          <mat-form-field appearance="outline">
+            <mat-label>Numéro de facture</mat-label>
+            <input matInput formControlName="numero_facture" placeholder="Numéro du fournisseur">
+            <mat-error *ngIf="factureForm.get('numero_facture')?.hasError('required')">
+              Le numéro est requis
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Date Émission -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date d'émission</mat-label>
+            <input matInput [matDatepicker]="pickerEmission" formControlName="date_emission">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerEmission"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEmission></mat-datepicker>
+            <mat-error *ngIf="factureForm.get('date_emission')?.hasError('required')">
+              La date est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Date Échéance -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date d'échéance</mat-label>
+            <input matInput [matDatepicker]="pickerEcheance" formControlName="date_echeance">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerEcheance"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEcheance></mat-datepicker>
+            <mat-error *ngIf="factureForm.get('date_echeance')?.hasError('required')">
+              La date est requise
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Statut -->
+          <mat-form-field appearance="outline">
+            <mat-label>Statut</mat-label>
+            <mat-select formControlName="statut">
+              <mat-option *ngFor="let statut of statuts" [value]="statut.value">
+                {{ statut.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Notes -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Notes</mat-label>
+            <textarea matInput formControlName="notes" rows="3" placeholder="Notes additionnelles"></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button mat-button type="button" (click)="onCancel()" [disabled]="loading">
+            Annuler
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || factureForm.invalid">
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+            <span *ngIf="!loading">{{ isEditMode ? 'Modifier' : 'Créer' }}</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

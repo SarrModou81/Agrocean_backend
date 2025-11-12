@@ -1,0 +1,115 @@
+<div class="commandes-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h2>Gestion des Commandes d'Achat</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="actions-bar">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Rechercher</mat-label>
+          <input matInput [(ngModel)]="searchTerm" (keyup.enter)="onSearch()" placeholder="Numéro, fournisseur...">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="onCreate()">
+          <mat-icon>add</mat-icon>
+          Nouvelle Commande
+        </button>
+      </div>
+
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <div *ngIf="!loading" class="table-container">
+        <table mat-table [dataSource]="commandes" class="full-width-table">
+          <ng-container matColumnDef="numero">
+            <th mat-header-cell *matHeaderCellDef>Numéro</th>
+            <td mat-cell *matCellDef="let commande">{{ commande.numero }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="fournisseur">
+            <th mat-header-cell *matHeaderCellDef>Fournisseur</th>
+            <td mat-cell *matCellDef="let commande">{{ commande.fournisseur?.nom || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="date_commande">
+            <th mat-header-cell *matHeaderCellDef>Date Commande</th>
+            <td mat-cell *matCellDef="let commande">{{ commande.date_commande | date:'dd/MM/yyyy' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="date_livraison_prevue">
+            <th mat-header-cell *matHeaderCellDef>Livraison Prévue</th>
+            <td mat-cell *matCellDef="let commande">{{ commande.date_livraison_prevue | date:'dd/MM/yyyy' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="montant_total">
+            <th mat-header-cell *matHeaderCellDef>Montant Total</th>
+            <td mat-cell *matCellDef="let commande">
+              {{ commande.montant_total | number:'1.0-0' }} FCFA
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="statut">
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let commande">
+              <mat-chip [color]="getStatutColor(commande.statut)">
+                {{ commande.statut }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let commande">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="onValider(commande)" *ngIf="canValider(commande)">
+                  <mat-icon color="primary">check_circle</mat-icon>
+                  <span>Valider</span>
+                </button>
+                <button mat-menu-item (click)="onReceptionner(commande)" *ngIf="canReceptionner(commande)">
+                  <mat-icon color="primary">inventory_2</mat-icon>
+                  <span>Réceptionner</span>
+                </button>
+                <button mat-menu-item (click)="onEdit(commande)" *ngIf="canEdit(commande)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Modifier</span>
+                </button>
+                <button mat-menu-item (click)="onAnnuler(commande)" *ngIf="canAnnuler(commande)">
+                  <mat-icon color="warn">cancel</mat-icon>
+                  <span>Annuler</span>
+                </button>
+                <button mat-menu-item (click)="onDelete(commande)" *ngIf="canDelete(commande)">
+                  <mat-icon color="warn">delete</mat-icon>
+                  <span>Supprimer</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+              Aucune commande trouvée
+            </td>
+          </tr>
+        </table>
+
+        <mat-paginator
+          [length]="totalItems"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[5, 10, 25, 50]"
+          (page)="onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
